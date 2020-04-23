@@ -1,0 +1,68 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/adjacencymatrix.h
+iostream
+-
+fstream
+-
+vector
+-
+sstream
+-
+algorithm
+-
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/main.cpp
+iostream
+-
+nautyyy.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/nautyyy.h
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/nautyyy.cpp
+nautyyy.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/nautyyy.h
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/nautyyy.h
+vector
+-
+iostream
+-
+chrono
+-
+adjacencymatrix.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/adjacencymatrix.h
+partition and refinement.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/partition and refinement.h
+permutation group.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/permutation group.h
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/partition and refinement.h
+vector
+-
+numeric
+-
+iostream
+-
+list
+-
+stack
+-
+map
+-
+adjacencymatrix.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/adjacencymatrix.h
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/permutation group.h
+vector
+-
+adjacencymatrix.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/adjacencymatrix.h
+partition and refinement.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/partition and refinement.h
+

@@ -1,0 +1,77 @@
+//No iso 7,11,12,15,18,19, 21-24
+
+//invar: pass current max invar into refinement procedure so one can stop the refinement in some cases
+//do that later, more complicated than thought. Think about a good concept beforehand (or don't)
+
+//fix read in of graphs, has to be able to distinguish input formats, make it more stable
+
+//change refinement stack to either one large vector or a vector of vectors, not stacks
+//!-> refinement stack size at level
+//for refinement info, use only one big vector and remember indices of the important subsections for each level. That was what's meant by size of refinement stack in paper
+//or keep it this for readability
+
+//fixed joins and seems to work a tiny bit better on most graphs but terribly bad one a few others. Take a look?
+//optional argument to specify a level until which stronger targetcell selector is chosen, after that level use first
+
+//implement distinguishing of vertices in refinement procedure using methods like for backtrack algorithm. how?
+
+//! decomposition can be improved, according to optimization, though they use adjacency lists, not adjacency matrix
+//!for most_trivial_joins a different degree function would be nice
+
+
+//clean up what is private and what is public in Nautyyy
+
+//I don't like the vector.erase(front) for removing first element of unbranched
+
+//!get rid of test for graph equality and thus leaf equivalence by using leaf certificate
+
+//! setting new best guess, definitely do that after finding new best invar but not do it when finding larger hash val?
+//it could make sense since ordering is lexicographic and full node invariant consists also of level before, not only value of graph at leaf
+
+
+//use size_t everywhere size of anything is concerned,
+// check with -Wall
+
+
+//old main
+
+void print_vec(const std::vector<int>& vec){
+    for(int i : vec){
+        std::cout<<i<<" ";
+    }std::cout<<"\n";
+}
+
+
+int main(int argc, char* argv[]) {
+    try{
+        std::cout<<"Begin Nautyyy: "<<std::endl;
+        char const* file1 = (argc>1) ? argv[1] : "../Resources/test7_1.txt";
+        char const* file2 = (argc>2) ? argv[2] : "../Resources/test7_2.txt";
+        Graph g = adjacency_matrix(file1);
+
+        Options nauty_settings{};
+        nauty_settings.print_stats = true;
+        nauty_settings.print_time = true;
+        nauty_settings.targetcellmethod = Partition::first;
+
+        Nautyyy ok(g, nauty_settings);
+
+        std::vector<int> result(ok.found_automorphisms.size(),0);
+        for(int i=0; i<ok.found_automorphisms.size(); i++){
+            result[i] = (ok.best_leaf.hash_of_perm_graph == Nautyyy(perm_graph(g, ok.found_automorphisms[i]), nauty_settings).best_leaf.hash_of_perm_graph) ;
+        }
+        bool iso = (ok.best_leaf.hash_of_perm_graph == Nautyyy(file2, nauty_settings).best_leaf.hash_of_perm_graph);
+
+        print_vec(result);
+        std::cout<<"Is good? "<<iso<<std::endl;
+    }
+    catch (const std::runtime_error& e){
+        std::cout<<e.what()<<std::endl;
+    }
+    std::cout<<"Finished."<<std::endl;
+
+
+
+
+    return 0;
+}

@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/cmake-build-debug",
+  "command": "/usr/bin/c++.exe   -I\"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/.\"  -g   -std=gnu++14 -o CMakeFiles/test_all.dir/adjacencymatrix.cpp.o -c \"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/adjacencymatrix.cpp\"",
+  "file": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/adjacencymatrix.cpp"
+},
+{
+  "directory": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/cmake-build-debug",
+  "command": "/usr/bin/c++.exe   -I\"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/.\"  -g   -std=gnu++14 -o CMakeFiles/test_all.dir/main.cpp.o -c \"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/main.cpp\"",
+  "file": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/main.cpp"
+},
+{
+  "directory": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/cmake-build-debug",
+  "command": "/usr/bin/c++.exe   -I\"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/.\"  -g   -std=gnu++14 -o CMakeFiles/test_all.dir/nauty.cpp.o -c \"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/nauty.cpp\"",
+  "file": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/nauty.cpp"
+},
+{
+  "directory": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/cmake-build-debug",
+  "command": "/usr/bin/c++.exe   -I\"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/.\"  -g   -std=gnu++14 -o CMakeFiles/test_all.dir/partition_and_refinement.cpp.o -c \"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/partition and refinement.cpp\"",
+  "file": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/partition and refinement.cpp"
+},
+{
+  "directory": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/cmake-build-debug",
+  "command": "/usr/bin/c++.exe   -I\"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/.\"  -g   -std=gnu++14 -o CMakeFiles/test_all.dir/permutation_group.cpp.o -c \"/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/permutation group.cpp\"",
+  "file": "/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/test-all/permutation group.cpp"
+}
+]
