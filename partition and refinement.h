@@ -217,7 +217,6 @@ private:
      */
     CellStruct most_non_trivial_joins(const Graph& graph) const;
 
-
 public:
     /*
      * shape_invar()
