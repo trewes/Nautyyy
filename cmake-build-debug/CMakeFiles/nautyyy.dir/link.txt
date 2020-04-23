@@ -1,1 +1,0 @@
-/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/Nautyyy.dir/adjacencymatrix.cpp.o CMakeFiles/Nautyyy.dir/main.cpp.o CMakeFiles/Nautyyy.dir/nautyyy.cpp.o CMakeFiles/Nautyyy.dir/partition_and_refinement.cpp.o CMakeFiles/Nautyyy.dir/permutation_group.cpp.o  -o Nautyyy.exe -Wl,--out-implib,libNautyyy.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
