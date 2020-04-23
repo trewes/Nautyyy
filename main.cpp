@@ -6,8 +6,8 @@
 int main(int argc, char* argv[]) {
     try{
         std::cout<<"Begin Nautyyy: "<<std::endl;
-        char const* file1 = (argc>1) ? argv[1] : "../Resources/test7_1.txt";
-        char const* file2 = (argc>2) ? argv[2] : "../Resources/test7_2.txt";
+        char const* file1 = (argc>1) ? argv[1] : "../Graphs/test7_1.txt";
+        char const* file2 = (argc>2) ? argv[2] : "../Graphs/test7_2.txt";
 
         Options nauty_settings{};
         nauty_settings.print_stats = true;

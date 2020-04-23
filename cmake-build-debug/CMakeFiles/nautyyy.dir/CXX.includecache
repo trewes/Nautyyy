@@ -6,7 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/adjacencymatrix.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/adjacencymatrix.cpp
+adjacencymatrix.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/adjacencymatrix.h
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/adjacencymatrix.h
 iostream
 -
 fstream
@@ -18,17 +22,17 @@ sstream
 algorithm
 -
 
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/main.cpp
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/main.cpp
 iostream
 -
 nautyyy.h
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/nautyyy.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/nautyyy.h
 
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/nautyyy.cpp
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/nautyyy.cpp
 nautyyy.h
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/nautyyy.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/nautyyy.h
 
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/nautyyy.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/nautyyy.h
 vector
 -
 iostream
@@ -36,13 +40,17 @@ iostream
 chrono
 -
 adjacencymatrix.h
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/adjacencymatrix.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/adjacencymatrix.h
 partition and refinement.h
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/partition and refinement.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/partition and refinement.h
 permutation group.h
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/permutation group.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/permutation group.h
 
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/partition and refinement.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/partition and refinement.cpp
+partition and refinement.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/partition and refinement.h
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/partition and refinement.h
 vector
 -
 numeric
@@ -56,13 +64,17 @@ stack
 map
 -
 adjacencymatrix.h
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/adjacencymatrix.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/adjacencymatrix.h
 
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/permutation group.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/permutation group.cpp
+permutation group.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/permutation group.h
+
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/permutation group.h
 vector
 -
 adjacencymatrix.h
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/adjacencymatrix.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/adjacencymatrix.h
 partition and refinement.h
-/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/nautyyy/partition and refinement.h
+/cygdrive/c/Users/Timo/Desktop/Uni/.Semester 4/Programmierpraktikum/Nautyyy/partition and refinement.h
 
