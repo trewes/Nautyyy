@@ -23,9 +23,9 @@
  * is more important to be very clear about which kind of iterator I am using to avoid confusion.
  *
  * The main reference for the implementation of this data structure is:
- * Junttila, Tommi & Kaski, Petteri. (2007).
- * Engineering an Efficient Canonical Labeling Tool for Large and Sparse Graphs.
- * 10.1137/1.9781611972870.13.
+ * Junttila, Tommi A. and Petteri Kaski.
+ * “Engineering an Efficient Canonical Labeling Tool for Large and Sparse Graphs.”
+ * ALENEX (2007).
  */
 
 
