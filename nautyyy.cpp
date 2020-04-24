@@ -31,13 +31,15 @@ void Statistics::pretty_time() const{
 
     auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
     duration -= milliseconds;
-    std::cout << milliseconds.count() << "ms" <<"."<<std::endl;
+    std::cout << milliseconds.count() << "ms";
 
     if(not milliseconds.count()) {
-        auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration);
-        duration -= nanoseconds;
-        std::cout << nanoseconds.count() << "ms" << "." << std::endl;
+        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(duration);
+        duration -= microseconds;
+        std::cout <<" "<< microseconds.count() << "us";
     }
+
+    std::cout<<"."<<std::endl;
 }
 
 Leaf::Leaf(): vertex_sequence(std::vector<int>()), leaf_perm(std::vector<int>()), hash_of_perm_graph(){
