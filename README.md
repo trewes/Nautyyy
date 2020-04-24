@@ -12,3 +12,5 @@ And
 Junttila, Tommi A. and Petteri Kaski. 
 “Engineering an Efficient Canonical Labeling Tool for Large and Sparse Graphs.” 
 ALENEX (2007). 
+
+For usage, run Nautyyy.exe -h
