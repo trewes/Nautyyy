@@ -13,13 +13,17 @@ void Statistics::pretty_time() const{
 
     auto duration = execution_time;
 
-    /*auto hours = std::chrono::duration_cast<std::chrono::hours>(duration);
+    auto hours = std::chrono::duration_cast<std::chrono::hours>(duration);
     duration -= hours;
-    std::cout << hours.count() << "h ";*/
+    if(hours.count()){
+        std::cout << hours.count() << "h ";
+    }
 
     auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
     duration -= minutes;
-    std::cout << minutes.count() << "m ";
+    if(minutes.count()){
+        std::cout << minutes.count() << "m ";
+    }
 
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
     duration -= seconds;
@@ -28,6 +32,12 @@ void Statistics::pretty_time() const{
     auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
     duration -= milliseconds;
     std::cout << milliseconds.count() << "ms" <<"."<<std::endl;
+
+    if(not milliseconds.count()) {
+        auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration);
+        duration -= nanoseconds;
+        std::cout << nanoseconds.count() << "ms" << "." << std::endl;
+    }
 }
 
 Leaf::Leaf(): vertex_sequence(std::vector<int>()), leaf_perm(std::vector<int>()), hash_of_perm_graph(){
