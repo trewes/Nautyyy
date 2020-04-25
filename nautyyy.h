@@ -15,6 +15,7 @@
 #include <vector>
 #include <iostream>
 #include <chrono>
+#include <stdexcept>
 
 #include "adjacencymatrix.h"
 #include "partition and refinement.h"

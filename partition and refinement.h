@@ -37,6 +37,8 @@
 #include <list>
 #include <stack>
 #include <map>
+#include <algorithm>
+#include <stdexcept>
 
 #include "adjacencymatrix.h"
 

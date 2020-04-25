@@ -11,6 +11,10 @@
  * */
 
 #include <vector>
+#include <algorithm>
+#include <iostream>
+#include <algorithm>
+#include <stdexcept>
 
 #include "adjacencymatrix.h"
 #include "partition and refinement.h"

@@ -15,6 +15,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <stdexcept>
 
 /*
  * The matrices are always handled as vectors of vectors containing booleans, this type is shortened to Matrix
