@@ -22,13 +22,10 @@ Graph adjacency_matrix(char const* filename){
     if(line.empty()){
         return graph;
     }
-    //!klsdnjksaoinmmmmmmmmmmmmmmmmmmmmmm, has issues
-    /*std::string a,b = "-1";
-    std::string test = line;
-    std::stringstream ne(test);
-    ne >> a >> b;
-    if(b!="-1" or (0 and any_of(line.begin(), line.end(), isspace))){      */
-    if((0 and any_of(line.begin(), line.end(), isspace))){                                         //File is of Format 1
+
+    auto space_pos = std::find_if(line.begin(), line.end(), isspace);
+    //when there is a space in the right place, it is of format 1. Exception that space is encountered at end is handled
+    if(space_pos != line.end() and (std::next(space_pos,1) != line.end())){                     //File is of Format 1
         do{
             std::stringstream ss(line);
             int tail, head;
