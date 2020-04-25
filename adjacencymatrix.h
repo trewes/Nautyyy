@@ -44,6 +44,13 @@ typedef std::vector<std::vector<bool>> Graph;
 Graph adjacency_matrix(char const* filename);
 
 /*
+ *  dimacs(filename)
+ *
+ *  For reference to the dimacs file format for graphs, see http://www.tcs.hut.fi/Software/bliss/fileformat.shtml
+ */
+Graph dimacs(char const* filename);
+
+/*
  * print_matrix(adjacency_matrix) Prints the matrix in a simple manner
  *
  * Parameter: The adjacency matrix that should be printed

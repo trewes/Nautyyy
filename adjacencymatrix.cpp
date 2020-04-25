@@ -7,10 +7,15 @@ Graph adjacency_matrix(char const* filename){
         throw std::runtime_error("Cannot open file.");
     }
 
-    int num_nodes = 0;
     std::string line;
-    std::getline(file, line);                                                    //read in the file line by line
+    std::getline(file, line);                                                     //read in the file line by line
+
+    if(isalpha(line[0])){
+        return dimacs(filename);
+    }
+
     std::stringstream ss(line);
+    int num_nodes = 0;
     ss >> num_nodes;
     if (not ss) {                            //first line must contain a single number, the number of nodes of the graph
         throw std::runtime_error("No number of vertices given, invalid file format.");
@@ -64,6 +69,54 @@ Graph adjacency_matrix(char const* filename){
     }
     return graph;
 }
+
+
+Graph dimacs(char const* filename){
+    std::ifstream file(filename);
+    if (not file) {                                                                                   //wrong file input
+        throw std::runtime_error("Cannot open file.");
+    }
+
+    std::string line;
+    std::getline(file, line);                                                     //read in the file line by line
+
+    while(line[0] == 'c'){
+        std::getline(file, line);                                                               //ignore comments
+    }
+    if(line[0] != 'p'){
+        throw std::runtime_error("File is not in correct dimcs format.");                //a different case was expected
+    }
+    std::string p, edge;
+    int n, e;
+    std::stringstream ss(line);
+    ss >> p >> edge >> n >> e;                                                       //read in number of nodes and edges
+                                                           //matrix with n row and columns is initialised, every entry 0
+    Graph graph(n, std::vector<bool>(n, false));
+    std::getline(file, line);
+    while(line[0] == 'n'){
+        std::cout<<"This program does not handle color assignment of\n"
+                   "vertices so lines with n at the beginning are ignored."<<std::endl;
+        std::getline(file, line);
+    }
+
+    int offset = 1;                                                  //in dimacs format, vertices start at 0 and go to n
+
+    char first;
+    int head, tail;
+    do {
+        std::stringstream ss(line);
+        ss >> first >> head >> tail;
+        graph[head - offset][tail - offset] = true;
+        graph[tail - offset][head - offset] = true;
+    }
+    while (std::getline(file, line));
+    return graph;
+}
+
+
+
+
+
 
 void print_matrix(const Graph& adjacency_matrix){
     for(int i=0; i<adjacency_matrix.size(); i++){                //simply print out one row, newline, print out next row
