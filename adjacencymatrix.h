@@ -20,7 +20,7 @@
 /*
  * The matrices are always handled as vectors of vectors containing booleans, this type is shortened to Matrix
  */
-typedef std::vector<std::vector<bool>> Graph;
+using Graph = std::vector<std::vector<bool>>;
 
 /*
  * adjacency_matrix(filename) creates an adjacency matrix to a given input graph
