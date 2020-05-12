@@ -72,20 +72,16 @@ void print_perm(const Permutation& perm) {                           //prints a 
 
 
 Graph perm_graph(const Graph& graph, const Permutation& perm) {
-    if(graph.size() != perm.size()){
+    if(graph.nof_vertices() != perm.size()){
         throw std::runtime_error("Size of graph and permutation do not match.");
     }
-    Graph perm_graph = Graph(perm.size());
+    Graph perm_graph = Graph(graph.nof_vertices());
 
-    /*for(int i=0; i<perm.size()-1; i++){
-        for(int j=i+1; j<perm.size(); j++){
-            if(graph.get(i,j)){
-                perm_graph.set(perm[i], perm[j]);
-            }
+    for(int i=0; i<graph.nof_vertices(); i++){
+        for(Vtype j : graph.vertices[i].edges){
+            perm_graph.add_edge(perm[i], perm[j]);
         }
-    }*/
-    //simply compose perms, figure out right order
-    perm_graph.perm = perm_composition(graph.perm, perm_inverse(perm));
+    }
     //print_matrix(graph); std::cout<<"a"<<std::endl;
     //print_matrix(perm_graph); std::cout<<"b"<<std::endl;
     return perm_graph;

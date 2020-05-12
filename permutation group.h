@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "adjacencymatrix.h"
+#include "sparse_graph.h"
 #include "partition and refinement.h"
 
 /*
@@ -26,7 +26,7 @@
  */
 using Permutation = std::vector<int>;
 using PermGroup = std::vector<Permutation>;
-using Graph = GraphStruct;
+using Graph = Sparse;
 
 /*
  * discrete_partition_to_perm(partition) Discrete partitions can be identified

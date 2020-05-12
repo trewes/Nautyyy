@@ -171,7 +171,7 @@ std::vector<std::vector<int>> Partition::decomposition(
     }
     std::map<int, std::vector<int>> temp{};
     for(const int& element: cell_v){
-        temp[degree(graph, element, cell_w)].push_back(element);       //put each element into the vector of it's degree
+        temp[graph.degree(element, cell_w)].push_back(element);       //put each element into the vector of it's degree
     }
     std::vector<std::vector<int>> decomposition;
     for(const auto& element: temp){
@@ -190,6 +190,10 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
                                                         //get the vertices that are represented by the chosen CellStruct
         std::vector<int> decode_cell_w = decode_given_cell(subsequence.front());
         subsequence.erase(subsequence.begin());
+        if(not is_sorted(decode_cell_w.begin(), decode_cell_w.end())){
+            std::sort(decode_cell_w.begin(), decode_cell_w.end());
+            //std::cout<<"Slight mishap"<<std::endl;
+        }
                                                                      //iterate over non singleton cells of the partition
         for(auto cell_it = non_singleton.begin();cell_it!=non_singleton.end(); cell_it++){
 
@@ -427,7 +431,7 @@ CellStruct Partition::most_non_trivial_joins(const Graph& graph) const {
             decode_cell_2 = std::vector<int>(element_vec.begin()+(*it_cell_2)->first,
                                              element_vec.begin()+(*it_cell_2)->first+(*it_cell_2)->length);
 
-            current_degree = degree(graph, element_vec[(*it_cell_1)->first], decode_cell_2);
+            current_degree = graph.degree(element_vec[(*it_cell_1)->first], decode_cell_2);
             if ((0 < current_degree)
                 and (current_degree < (*it_cell_2)->length)) {
                 count[cell_1]++;

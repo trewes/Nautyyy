@@ -1,5 +1,7 @@
 #include "nautyyy.h"
 
+#include <utility>
+
 
 
 void Statistics::print() const {
@@ -73,17 +75,15 @@ int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, const std:
 
                                                                //simple/empty initialization of most fields of the class
 Nautyyy::Nautyyy(char const* filename, Options options)
-    : opt(std::move(options)), stats(Statistics()), graph(adjacency_matrix(filename)),
+    : opt(std::move(options)), stats(Statistics()), graph(Sparse(filename)),
       found_automorphisms(std::vector<Permutation>()), unbranched(std::vector<std::vector<Vertex>>()),
       current_vertex_sequence(std::vector<Vertex>()), first_leaf(Leaf()), best_leaf(Leaf()),
       max_invar_at_level(std::vector<InvarType>()){
 
     stats.start_time = std::chrono::steady_clock::now();
 
-    print_matrix(graph); std::cout<<"nw"<<std::endl;
-
     if(opt.use_unit_partition){
-        current_partition = Partition(graph.size());                                      //begin with unit partition
+        current_partition = Partition(graph.nof_vertices());                                      //begin with unit partition
     }
     else{
         current_partition = opt.input_partition;                                              //or user passes partition
@@ -101,19 +101,16 @@ Nautyyy::Nautyyy(char const* filename, Options options)
 
 
 //same as other constructor but the graph is passed as graph and not as filename to read in a graph
-Nautyyy::Nautyyy(const Graph& in_graph, Options options)
-        : opt(std::move(options)), stats(Statistics()), graph(in_graph),
+Nautyyy::Nautyyy(Graph  in_graph, Options options)
+        : opt(std::move(options)), stats(Statistics()), graph(std::move(in_graph)),
           found_automorphisms(std::vector<Permutation>()), unbranched(std::vector<std::vector<Vertex>>()),
           current_vertex_sequence(std::vector<Vertex>()), first_leaf(Leaf()), best_leaf(Leaf()),
           max_invar_at_level(std::vector<InvarType>()){
 
     stats.start_time = std::chrono::steady_clock::now();
 
-    print_matrix(graph); std::cout<<"nw"<<std::endl;    //apparently using std::move in constructor has bad behaviour
-    //no, that's not quite it either
-
     if(opt.use_unit_partition){
-        current_partition = Partition(graph.size());
+        current_partition = Partition(graph.nof_vertices());
     }
     else{
         current_partition = opt.input_partition;
@@ -268,7 +265,7 @@ void Nautyyy::process_leaf() {
 
     if(first_leaf.undiscovered()){                                                              //first encountered leaf
         Permutation leaf_perm = discrete_partition_to_perm(current_partition);
-        std::vector<bool> hash_val = value_of_graph(perm_graph(graph, leaf_perm));
+        std::vector<bool> hash_val = perm_graph(graph, leaf_perm).hash_value();
         first_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);
 
         best_leaf = first_leaf;
@@ -277,7 +274,7 @@ void Nautyyy::process_leaf() {
     }
                                                                //otherwise compare leaf to first_found_leaf or best_leaf
     Permutation leaf_perm = discrete_partition_to_perm(current_partition);
-    std::vector<bool> hash_val = value_of_graph(perm_graph(graph, leaf_perm));
+    std::vector<bool> hash_val = perm_graph(graph, leaf_perm).hash_value();
 
                                                              //there has been a new maximum invariant, update best guess
                                                                                                                     //!not sure about this. definitely found_new_best_invar but idk about hash val >

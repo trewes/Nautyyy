@@ -40,7 +40,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "adjacencymatrix.h"
+#include "sparse_graph.h"
 
 
 /*
@@ -48,7 +48,7 @@
  * InvarType is used for an invariant that comes up.
  * Vertex is used when representing what is supposed to be a vertex
  */
-using Graph = GraphStruct;
+using Graph = Sparse;
 using InvarType = std::vector<int>;
 using Vertex = int; //unsigned
 

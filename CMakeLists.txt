@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(.)
 
 add_executable(Nautyyy
-        adjacencymatrix.cpp
-        adjacencymatrix.h
+        sparse_graph.cpp
+        sparse_graph.h
         main.cpp
         nautyyy.cpp
         nautyyy.h

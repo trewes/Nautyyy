@@ -17,14 +17,14 @@
 #include <chrono>
 #include <stdexcept>
 
-#include "adjacencymatrix.h"
+#include "sparse_graph.h"
 #include "partition and refinement.h"
 #include "permutation group.h"
 
 /*
  * Self-explanatory typedefs of certain types.
  */
-using Graph = GraphStruct;
+using Graph = Sparse;
 using Permutation = std::vector<int>;
 using PermGroup = std::vector<Permutation>;
 using InvarType = std::vector<int>;
@@ -224,7 +224,7 @@ public:
      * Then it calls search_tree_traversal() and the main algorithm begins.
      */
     explicit Nautyyy(char const* filename, Options options = Options{});
-    explicit Nautyyy(const Graph& in_graph, Options options = Options{});
+    explicit Nautyyy(Graph  in_graph, Options options = Options{});
 };
 
 
