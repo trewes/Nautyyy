@@ -138,7 +138,7 @@ struct Leaf{
  *                     lexikographic, we erase all invars after the current level if a new greatest has been found
  *
  * Auxiliary boolean variables:
- * found_new_best_invar: found new max invariant so next encountered leaf will be next max
+ * best_leaf_outdated_due_to_invariant: found new max invariant so next encountered leaf will be next max
  * first_path_explored: we do not prune by node invariants for nodes a prefix of the first found leaf,
  *                      i.e. prune by node invariant only after second encounter of root node (if set that way in opt)
  *  first_path_help: helper bool to check if we explored first path
@@ -167,7 +167,7 @@ public:
 private:
     std::vector<InvarType> max_invar_at_level;
 
-    bool found_new_best_invar = false;
+    bool best_leaf_outdated_due_to_invariant = false;
     bool first_path_explored = false;
     bool first_path_help = false;
 
