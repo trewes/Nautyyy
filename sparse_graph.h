@@ -31,6 +31,7 @@ public:
     std::vector<Vertex> vertices;
     int degree(const Vtype & vertex, const std::vector<Vtype>& cell) const;
     std::vector<bool> hash_value() const;
+    void dimacs(const char* filename);
 };
 
 #endif //SPARSE_GRAPH_GRAPH_H
