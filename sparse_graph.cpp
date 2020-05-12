@@ -150,7 +150,7 @@ void Sparse::print() const{
 
 int Sparse::degree(const Vtype &vertex, const std::vector<Vtype> &cell) const{
     if(not is_sorted(cell.begin(), cell.end())){
-        //throw std::runtime_error("Given cell is not sorted, degree calculation may go wrong.");
+        throw std::runtime_error("Given cell is not sorted, degree calculation may go wrong.");
     }
     std::vector<Vtype> intersection{};
     std::set_intersection(vertices[vertex].edges.begin(), vertices[vertex].edges.end(),
@@ -160,6 +160,8 @@ int Sparse::degree(const Vtype &vertex, const std::vector<Vtype> &cell) const{
 
 std::vector<bool> Sparse::hash_value() const{
     int n = nof_vertices();
+                                                           //could also reduce size here by indexing from strictly upper
+                                                        //triangular matrix, result would only need to be n*(n-1)/2 then
     std::vector<bool> result(n*n, false);
     for(int i=0; i<n; i++){
         for(auto j: vertices[i].edges){
@@ -168,5 +170,19 @@ std::vector<bool> Sparse::hash_value() const{
     }
     return result;
 }
+
+
+std::vector<bool> Sparse::perm_hash_value(const Permutation& perm) const{
+    int n = nof_vertices();
+    std::vector<bool> result(n*n, false);
+
+    for(int i=0; i<n; i++){
+        for(auto j: vertices[i].edges){
+            result[n * (n - perm[i]) - perm[j]-1] = true;                    //check existence of permuted edges instead
+        }
+    }
+    return result;
+}
+
 
 

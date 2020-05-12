@@ -82,8 +82,6 @@ Graph perm_graph(const Graph& graph, const Permutation& perm) {
             perm_graph.add_edge(perm[i], perm[j]);
         }
     }
-    //print_matrix(graph); std::cout<<"a"<<std::endl;
-    //print_matrix(perm_graph); std::cout<<"b"<<std::endl;
     return perm_graph;
 }
 
