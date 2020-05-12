@@ -137,7 +137,16 @@ private:
      *            cell_v, cell_w Both vectors of int's representing vertices of the graph
      * Returns: A vector of subsets of cell_v in ascending order in regards to their elements degree to cell_w
      */
-    static std::vector<std::vector<int>> decomposition(const Graph& graph, const std::vector<int>& cell_v, const std::vector<int>& cell_w) ;
+    static std::vector<std::vector<int>> decomposition(const Graph& graph, const std::vector<int>& cell_v, const std::vector<int>& cell_w);
+    /*
+     * sp_decomposition(graph, cell_v, cell_w) A slight variant of decomposition which employs the pre computed degrees
+     *
+     * Parameter: graph as above
+     *            cell which we want to decompose according to
+     *            all_degrees the vector containing the degrees of all vertices into a cell chosen before
+     * Returns: A vector of subsets of cell_v in ascending order in regards to their elements degree in all_degrees
+     */
+    static std::vector<std::vector<int>> sp_decomposition(const Graph& graph, const std::vector<int>& cell, const std::vector<int>& all_degrees);
 
 public:
     /*

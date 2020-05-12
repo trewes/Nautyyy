@@ -180,6 +180,26 @@ std::vector<std::vector<int>> Partition::decomposition(
     return decomposition;
 }
 
+std::vector<std::vector<int>> Partition::sp_decomposition(const Graph& graph, const std::vector<int>& cell_v, const std::vector<int>& all_degrees)  {
+
+    if(cell_v.size() == 1){
+        throw std::runtime_error("A cell of size 1 cannot be decomposed.");
+    }
+
+    std::vector<std::vector<int>> decomposition;
+
+    std::map<int, std::vector<int>> temp{};
+    for (const int &element: cell_v) {
+        temp[all_degrees[element]].push_back(element);          //put each element into the vector of it's degree
+    }
+
+    for (const auto &element: temp) {
+        decomposition.push_back(element.second);
+    }
+    return decomposition; //need to return iterators to neighbor cells in some way too
+}
+
+
 //as given in (2013) with my chosen data structure for Partitions
 void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence) {
     if(subsequence.empty()){                              //when no subsequence is given, use all cells of the partition
@@ -190,18 +210,34 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
                                                         //get the vertices that are represented by the chosen CellStruct
         std::vector<int> decode_cell_w = decode_given_cell(subsequence.front());
         subsequence.erase(subsequence.begin());
-        if(not is_sorted(decode_cell_w.begin(), decode_cell_w.end())){
-            std::sort(decode_cell_w.begin(), decode_cell_w.end());
+        //if(not is_sorted(decode_cell_w.begin(), decode_cell_w.end())){
+            //std::sort(decode_cell_w.begin(), decode_cell_w.end());
+            //! I want to get rid of this sort. I might get rid of this since I don't use degree anymore?
             //std::cout<<"Slight mishap"<<std::endl;
+        //}
+                                                         //create the vector all_degress used in decomposing cells later
+        std::vector<int> all_degrees(element_vec.size(), 0);
+        for(int w: decode_cell_w){                                             //for all elements of W get all neighbors
+            for(Vertex neighbor: graph.vertices[w].edges){          //and so find the degree of neighbor vertices into W
+                all_degrees[neighbor]++;
+            }
         }
                                                                      //iterate over non singleton cells of the partition
         for(auto cell_it = non_singleton.begin();cell_it!=non_singleton.end(); cell_it++){
 
+
               std::list<CellStruct>::iterator cell = *cell_it;       //get the iterator in lcs of the non-singleton cell
                                                                 //as above, get vertices represented by the current cell
             std::vector<int> decode_cell = decode_given_cell(*cell);
+
+            if (std::all_of(decode_cell.begin(), decode_cell.end(),
+                    [all_degrees](int vertex){return all_degrees[vertex]==0;})){
+                continue;                                 //the cell is not a neighbor cell of cell_w, it won't be split
+            }
+
+
                                                                   //Now decompose the cell by relation to the other cell
-             std::vector<std::vector<int>> vk_decomposition = decomposition(graph, decode_cell, decode_cell_w);
+             std::vector<std::vector<int>> vk_decomposition = sp_decomposition(graph, decode_cell, all_degrees);
             if (vk_decomposition.size() == 1) {continue;}                     //if there is no decomposition, do nothing
                                                                                       //otherwise: check some conditions
                                                      //check if current cell of the partition is also in the subsequence
