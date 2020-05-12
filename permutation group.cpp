@@ -75,12 +75,19 @@ Graph perm_graph(const Graph& graph, const Permutation& perm) {
     if(graph.size() != perm.size()){
         throw std::runtime_error("Size of graph and permutation do not match.");
     }
-    Graph perm_graph = graph;
-    for(int i=0; i<perm.size(); i++) {
-        for (int j=0; j<perm.size(); j++) {
-            perm_graph[perm[i]][perm[j]] = graph[i][j];                //perm[i] incident to perm[j] iff i adjacent to j
+    Graph perm_graph = Graph(perm.size());
+
+    /*for(int i=0; i<perm.size()-1; i++){
+        for(int j=i+1; j<perm.size(); j++){
+            if(graph.get(i,j)){
+                perm_graph.set(perm[i], perm[j]);
+            }
         }
-    }
+    }*/
+    //simply compose perms, figure out right order
+    perm_graph.perm = perm_composition(graph.perm, perm_inverse(perm));
+    //print_matrix(graph); std::cout<<"a"<<std::endl;
+    //print_matrix(perm_graph); std::cout<<"b"<<std::endl;
     return perm_graph;
 }
 

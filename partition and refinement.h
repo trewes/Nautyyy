@@ -48,7 +48,7 @@
  * InvarType is used for an invariant that comes up.
  * Vertex is used when representing what is supposed to be a vertex
  */
-using Graph = std::vector<std::vector<bool>>;
+using Graph = GraphStruct;
 using InvarType = std::vector<int>;
 using Vertex = int; //unsigned
 

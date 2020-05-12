@@ -17,10 +17,59 @@
 #include <algorithm>
 #include <stdexcept>
 
+
 /*
  * The matrices are always handled as vectors of vectors containing booleans, this type is shortened to Matrix
  */
-typedef std::vector<std::vector<bool>> Graph;
+using Index = unsigned int;
+using Permutation = std::vector<int>;
+using Graph = struct GraphStruct{
+    std::vector<bool> matrix{};
+    Permutation perm{};
+    int size() const{
+        return perm.size();
+    }
+    void set(Index i, Index j){     //only used when reading in the graph
+        if(i<j){
+            std::swap(i,j);
+        }
+        int n = size();
+        //int index = (n*(n-1))/2 - ((n-i)*((n-i)-1))/2 + j - i - 1;
+        int index = (i*(2*n-i-1))/2+j;
+        matrix[index] = true;
+    }
+    bool get(Index i, Index j) const{
+        i=perm[i];
+        j=perm[j];
+        if(i==j){std::cout<<"ERROR"<<std::endl; return false;}
+        if(i<j){
+            std::swap(i,j);
+        }
+        int n = size();
+        //int index = (n*(n-1))/2 - ((n-i)*((n-i)-1))/2 + j - i - 1;
+        //std::cout<<index<<" from "<<i<<" "<<j<<std::endl;
+        int index = (i*(2*n-i-1))/2+j;
+        return matrix[index];
+    }
+    GraphStruct() = default;
+    explicit GraphStruct(int n){
+        matrix= std::vector<bool>((n-1)*n/2, false);
+        perm = Permutation(n);
+        for(int i=0; i<n; i++){
+            perm[i] = i;
+        }
+    }
+    GraphStruct(const GraphStruct& old){
+        matrix = old.matrix;
+        perm = old.perm;
+    }
+    GraphStruct& operator=(const GraphStruct& old){
+        matrix = old.matrix;
+        perm = old.perm;
+        return *this;
+    }
+
+};
 
 /*
  * adjacency_matrix(filename) creates an adjacency matrix to a given input graph
@@ -55,7 +104,7 @@ Graph dimacs(char const* filename);
  *
  * Parameter: The adjacency matrix that should be printed
  */
-void print_matrix(const Graph& adjacency_matrix);
+void print_matrix(const Graph& graph);
 
 /*
  * value_of_graph(graph) The rows of the matrix written down row by row and interpreted as a n^2-bit string

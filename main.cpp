@@ -88,13 +88,14 @@ int main(int argc, char* argv[]) {
     }
 
     //optind is the index in argv after going through all the options, now the arguments are given
-    char const* file1 = (argc>2) ? argv[optind] : "../Graphs/test7_1.txt";
+    char const* file1 = (argc>2) ? argv[optind] : "../Graphs/test.txt";
     char const* file2 = (argc>2) ? argv[optind+1] : "../Graphs/test7_2.txt";
 
     try{
         std::cout<<"Begin Nautyyy: "<<std::endl;
 
         Graph g = adjacency_matrix(file1);
+        std::cout<<"Test degree "<<degree(g, 0, std::vector<int>{0,1,2,3,4,5,6,7,8})<<std::endl;
         Nautyyy g_nautyyy(g, nauty_settings);
 
         bool isomorphic = (g_nautyyy.best_leaf.hash_of_perm_graph == Nautyyy(file2, nauty_settings).best_leaf.hash_of_perm_graph);

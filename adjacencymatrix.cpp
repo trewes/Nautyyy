@@ -20,8 +20,9 @@ Graph adjacency_matrix(char const* filename){
     if (not ss) {                            //first line must contain a single number, the number of nodes of the graph
         throw std::runtime_error("No number of vertices given, invalid file format.");
     }
-                                                           //matrix with n row and columns is initialised, every entry 0
-    Graph graph(num_nodes, std::vector<bool>(num_nodes, false));
+    //matrix with n row and columns is initialised, every entry 0
+    Graph graph = Graph(num_nodes);
+
     line = std::string();
     std::getline(file, line);
     if(line.empty()){
@@ -38,9 +39,9 @@ Graph adjacency_matrix(char const* filename){
             if (not ss) {                                                          //each line must give a tail and head
                 throw std::runtime_error("Invalid file format, not the correct edge format.");
             }
-            if (tail != head or graph[tail][head] != true) {                        //graph is supposed to be undirected
-                graph[tail][head] = true;
-                graph[head][tail] = true;
+            if (tail != head) {                                                      //graph is assumed to be undirected
+                graph.set(tail,head);
+
             }
             else {
                 throw std::runtime_error("Invalid file format: loops and parallel edges not allowed.");
@@ -61,12 +62,13 @@ Graph adjacency_matrix(char const* filename){
                     throw std::runtime_error("Invalid file format: loops not allowed.");
                 }
                 if(edges[head]=='1'){
-                    graph[tail][head] = true;
+                    graph.set(tail,head);
                 }
             }
             std::getline(file, line);
         }
     }
+    print_matrix(graph); std::cout<<"in"<<std::endl;
     return graph;
 }
 
@@ -90,8 +92,9 @@ Graph dimacs(char const* filename){
     int n, e;
     std::stringstream ss(line);
     ss >> p >> edge >> n >> e;                                                       //read in number of nodes and edges
-                                                           //matrix with n row and columns is initialised, every entry 0
-    Graph graph(n, std::vector<bool>(n, false));
+    //matrix with n row and columns is initialised, every entry 0
+    Graph graph = Graph(n);
+
     std::getline(file, line);
     while(line[0] == 'n'){
         std::cout<<"This program does not handle color assignment of\n"
@@ -106,8 +109,8 @@ Graph dimacs(char const* filename){
     do {
         std::stringstream ss(line);
         ss >> first >> head >> tail;
-        graph[head - offset][tail - offset] = true;
-        graph[tail - offset][head - offset] = true;
+        graph.set(head - offset,tail - offset);
+        graph.set(tail - offset,head - offset);
     }
     while (std::getline(file, line));
     return graph;
@@ -118,35 +121,43 @@ Graph dimacs(char const* filename){
 
 
 
-void print_matrix(const Graph& adjacency_matrix){
-    for(int i=0; i<adjacency_matrix.size(); i++){                //simply print out one row, newline, print out next row
-        for(int j=0; j<adjacency_matrix.size(); j++){
-            std::cout<<adjacency_matrix[i][j];
-        }std::cout<<"\n";
-    }
+void print_matrix(const Graph& graph){
+    for(int i=0; i < graph.size()-1; i++){ //last row only has i>=j, no need to print
+        std::cout<<".";
+        for(int j=0; j<=i; j++){
+            std::cout<<" ";
+        }
+        for(int j=i+1; j < graph.size(); j++){
+            std::cout << graph.get(i, j);
+        }
+        std::cout<<"\n";
+    }std::cout<<"done\n";
 }
 
 std::vector<bool> value_of_graph(const Graph& graph) {
-    int n = graph.size();
+    /*int n = graph.size();
     std::vector<bool> result(n*n, false);
     for(int i=0; i<n; i++){
         for(int j=0; j<n; j++){
-            if(graph[i][j]){                                 //index (i,j) of matrix corresponds to position n*(n-i)-j-1
+            if(graph.get(i,j)){                                 //index (i,j) of matrix corresponds to position n*(n-i)-j-1
                 result[n * (n - i) - j-1] = true;       //of the string if matrix is written down in a row by row fashion
             }
-        }
+        }//!adjust to new graph
     }
-    return result;
+    return result;*/
+    return graph.matrix; //already in wanted hash form
 }
 
 
 int degree(const Graph& graph, const int& vertex, const std::vector<int>& cell){
     int count = 0;
     for(int i : cell){
-        if(graph[vertex][i]){                         //there is an edge going from vertex into the cell, increase count
+        if(vertex!=i and graph.get(vertex,i)){                         //there is an edge going from vertex into the cell, increase count
+            std::cout<<"adds "<<vertex<<" edge "<<i<<std::endl;
             count++;
         }
     }
+    std::cout<<vertex<<" has "<<count<<std::endl;
     return count;
 }
 

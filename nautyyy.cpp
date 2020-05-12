@@ -80,6 +80,8 @@ Nautyyy::Nautyyy(char const* filename, Options options)
 
     stats.start_time = std::chrono::steady_clock::now();
 
+    print_matrix(graph); std::cout<<"nw"<<std::endl;
+
     if(opt.use_unit_partition){
         current_partition = Partition(graph.size());                                      //begin with unit partition
     }
@@ -99,13 +101,16 @@ Nautyyy::Nautyyy(char const* filename, Options options)
 
 
 //same as other constructor but the graph is passed as graph and not as filename to read in a graph
-Nautyyy::Nautyyy(Graph in_graph, Options options)
-        : opt(std::move(options)), stats(Statistics()), graph(std::move(in_graph)),
+Nautyyy::Nautyyy(const Graph& in_graph, Options options)
+        : opt(std::move(options)), stats(Statistics()), graph(in_graph),
           found_automorphisms(std::vector<Permutation>()), unbranched(std::vector<std::vector<Vertex>>()),
           current_vertex_sequence(std::vector<Vertex>()), first_leaf(Leaf()), best_leaf(Leaf()),
           max_invar_at_level(std::vector<InvarType>()){
 
     stats.start_time = std::chrono::steady_clock::now();
+
+    print_matrix(graph); std::cout<<"nw"<<std::endl;    //apparently using std::move in constructor has bad behaviour
+    //no, that's not quite it either
 
     if(opt.use_unit_partition){
         current_partition = Partition(graph.size());

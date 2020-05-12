@@ -24,9 +24,9 @@
  * And permutations are integer vectors sending i to permutation[i]. Shortened to Permutation.
  * PermGroup is then a representation of a group of Permutations in it's most basic form
  */
-typedef std::vector<std::vector<bool>> Graph;
-typedef std::vector<int> Permutation;
-typedef std::vector<Permutation> PermGroup;
+using Permutation = std::vector<int>;
+using PermGroup = std::vector<Permutation>;
+using Graph = GraphStruct;
 
 /*
  * discrete_partition_to_perm(partition) Discrete partitions can be identified
