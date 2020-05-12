@@ -244,7 +244,7 @@ void Nautyyy::process_node(){
                                      //reset the max invariant values following after, since everything is lexicographic
         max_invar_at_level.resize(current_level);
                                                              //update the next leaf encountered to be the new best guess
-        found_new_best_invar = true;
+        best_leaf_outdated_due_to_invariant = true;
         current_level++;
         return;
     }
@@ -277,12 +277,12 @@ void Nautyyy::process_leaf() {
     std::vector<bool> hash_val = graph.perm_hash_value(leaf_perm);
 
                                                              //there has been a new maximum invariant, update best guess
-                                                                                                                    //!not sure about this. definitely found_new_best_invar but idk about hash val >
-    if(found_new_best_invar){//hash_val > best_leaf.hash_of_perm_graph){
+                                                                                                                    //!not sure about this. definitely best_leaf_outdated_due_to_invariant but idk about hash val >
+    if(best_leaf_outdated_due_to_invariant){//hash_val > best_leaf.hash_of_perm_graph){
         best_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);      //update best canonical node
         stats.best_leaf_updates++;
         backtrack_to(current_level-1);
-        found_new_best_invar=false;
+        best_leaf_outdated_due_to_invariant=false;
         return;
     }
      if(hash_val == first_leaf.hash_of_perm_graph){                  //leaves are equivalent, this gives an automorphism
