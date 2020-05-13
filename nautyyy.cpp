@@ -276,7 +276,7 @@ void Nautyyy::process_leaf() {
 
                                                              //there has been a new maximum invariant, update best guess
                                                                                                                     //!not sure about this. definitely best_leaf_outdated_due_to_invariant but idk about hash val >
-    if(best_leaf_outdated_due_to_invariant){//hash_val > best_leaf.hash_of_perm_graph){
+    if(best_leaf_outdated_due_to_invariant or hash_val > best_leaf.hash_of_perm_graph){
         best_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);      //update best canonical node
         stats.best_leaf_updates++;
         backtrack_to(current_level-1);
