@@ -87,7 +87,7 @@ struct Options{
     Partition input_partition = Partition();
     bool print_stats = false;
     bool print_time = false;
-    int max_level_strong_tc = 0;
+    unsigned int max_level_strong_tc = 0;
     Partition::TargetcellMethod strong_targetcellmethod = Partition::joins;
 };
 
@@ -154,7 +154,7 @@ private:
     Statistics stats;
     const Options opt;
     const Graph graph;
-    int current_level;
+    unsigned int current_level;
     Partition current_partition;
 public:
     PermGroup found_automorphisms;                                   //public, if one is interested in the automorphisms

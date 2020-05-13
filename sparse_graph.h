@@ -47,7 +47,7 @@ class Sparse{
     public:
         Vertex();
         void add_edge(Vtype vertex);
-        int nof_edges() const;
+        unsigned int nof_edges() const;
         std::set<Vtype> edges;
     };
 
@@ -56,7 +56,7 @@ public:
     void add_edge(Vtype v1, Vtype v2);
     explicit Sparse(int num_vertices);
     void print() const;
-    int nof_vertices() const;
+    unsigned int nof_vertices() const;
 
     /*
      * Sparse(filename) creates an adjacency list structure to a given input graph

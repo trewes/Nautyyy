@@ -1,6 +1,8 @@
 #include <iostream>
 #include <getopt.h>
 
+#include <random>
+
 #include "nautyyy.h"
 
 
@@ -97,7 +99,16 @@ int main(int argc, char* argv[]) {
         Graph g = Sparse(file1);
         Nautyyy g_nautyyy(g, nauty_settings);
 
-        bool isomorphic = (g_nautyyy.best_leaf.hash_of_perm_graph == Nautyyy(file2, nauty_settings).best_leaf.hash_of_perm_graph);
+        std::vector<int> perm(g.nof_vertices());
+        std::iota(perm.begin(), perm.end(), 0);
+
+        for(int i=0; i<9; i++){
+            std::shuffle(perm.begin(), perm.end(), std::default_random_engine(i*i+1234991));
+            std::cout<<(g_nautyyy.best_leaf.hash_of_perm_graph == Nautyyy(perm_graph(g, perm), nauty_settings).best_leaf.hash_of_perm_graph)<<" Test"<<std::endl;
+        }
+
+
+        bool isomorphic = (g_nautyyy.best_leaf.hash_of_perm_graph == Nautyyy(perm_graph(g, perm), nauty_settings).best_leaf.hash_of_perm_graph);
 
         std::vector<std::string> answer{"No", "Yes"};
         std::cout<<"Isomorphic: "<<answer[isomorphic]<<"."<<std::endl;

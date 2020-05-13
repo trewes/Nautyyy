@@ -63,7 +63,7 @@ bool Leaf::undiscovered() const{
 
 int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence) {
 
-    for(int same_untill = 0; same_untill<std::min(first_sequence.size(), second_sequence.size()); same_untill++){
+    for(size_t same_untill = 0, max = std::min(first_sequence.size(), second_sequence.size()); same_untill<max; same_untill++){
         if(first_sequence[same_untill] != second_sequence[same_untill]){
             return same_untill+1;                                     //the level up to which the vertex sequences agree
         }
@@ -75,7 +75,7 @@ int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, const std:
 
                                                                //simple/empty initialization of most fields of the class
 Nautyyy::Nautyyy(char const* filename, Options options)
-    : opt(std::move(options)), stats(Statistics()), graph(Sparse(filename)),
+    : stats(Statistics()), opt(std::move(options)), graph(Sparse(filename)),
       found_automorphisms(std::vector<Permutation>()), unbranched(std::vector<std::vector<Vertex>>()),
       current_vertex_sequence(std::vector<Vertex>()), first_leaf(Leaf()), best_leaf(Leaf()),
       max_invar_at_level(std::vector<InvarType>()){
@@ -102,7 +102,7 @@ Nautyyy::Nautyyy(char const* filename, Options options)
 
 //same as other constructor but the graph is passed as graph and not as filename to read in a graph
 Nautyyy::Nautyyy(Graph  in_graph, Options options)
-        : opt(std::move(options)), stats(Statistics()), graph(std::move(in_graph)),
+        : stats(Statistics()), opt(std::move(options)), graph(std::move(in_graph)),
           found_automorphisms(std::vector<Permutation>()), unbranched(std::vector<std::vector<Vertex>>()),
           current_vertex_sequence(std::vector<Vertex>()), first_leaf(Leaf()), best_leaf(Leaf()),
           max_invar_at_level(std::vector<InvarType>()){

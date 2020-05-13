@@ -9,7 +9,7 @@ void Sparse::Vertex::add_edge(const Vtype vertex) {
     edges.insert(vertex);
 }
 
-int Sparse::Vertex::nof_edges() const{
+unsigned int Sparse::Vertex::nof_edges() const{
     return edges.size();
 }
 
@@ -18,7 +18,7 @@ void Sparse::add_edge(Vtype v1, Vtype v2){
     vertices[v2].add_edge(v1);
 }
 
-int Sparse::nof_vertices() const {
+unsigned int Sparse::nof_vertices() const {
     return vertices.size();
 }
 
@@ -140,7 +140,7 @@ void Sparse::dimacs(char const* filename){
 
 
 void Sparse::print() const{
-    for(int v=0; v<vertices.size(); v++){
+    for(size_t v=0, max = vertices.size(); v<max; v++){
         std::cout<<v<<" :";
         for(Vtype w: vertices[v].edges){
             std::cout<<" "<<w;

@@ -20,7 +20,7 @@ Permutation discrete_partition_to_perm(const Partition& partition) {
 
 Permutation perm_inverse(const Permutation& perm) {
     std::vector<int> inverse(perm.size());
-    for(int i=0; i<perm.size(); i++){
+    for(size_t i=0, max = perm.size(); i<max; i++){
         inverse[perm[i]] = i;
     }
     return inverse;
@@ -31,7 +31,7 @@ Permutation perm_composition(const Permutation& first_perm, const Permutation& s
         throw std::runtime_error("Permutations are not of the same size.");
     }
     Permutation product(first_perm.size());
-    for(int i=0; i<first_perm.size(); i++){
+    for(size_t i=0, max = first_perm.size(); i<max; i++){
         product[i] = second_perm[first_perm[i]];
     }
     return product;
@@ -55,7 +55,7 @@ void print_perm(const Permutation& perm) {                           //prints a 
     }
     std::vector<int> visited(perm.size(), 0);
     int temp;
-    for(int i=0; i<visited.size(); i++) {
+    for(size_t i=0, max = visited.size(); i<max; i++) {
         if ((not visited[i]) and (perm[i]!=i)) {                //extra condition to exclude elements sent to themselves
             temp = i;
             visited[i]=1;
@@ -77,7 +77,7 @@ Graph perm_graph(const Graph& graph, const Permutation& perm) {
     }
     Graph perm_graph = Graph(graph.nof_vertices());
 
-    for(int i=0; i<graph.nof_vertices(); i++){
+    for(size_t i=0, max = graph.nof_vertices(); i<max; i++){
         for(Vtype j : graph.vertices[i].edges){
             perm_graph.add_edge(perm[i], perm[j]);
         }
@@ -119,7 +119,7 @@ std::vector<int> mcrs(const PermGroup &permutations, const std::vector<int> &seq
     std::vector<int> visited(permutations[0].size(), 0);
     PermGroup subgroup = subgroup_fixing_sequence(permutations, sequence);
     int temp;
-    for(int i=0; i<visited.size(); i++) {
+    for(size_t i=0, max = visited.size(); i<max; i++) {
         if (not visited[i]){
             visited[i]=1;
             result.push_back(i);

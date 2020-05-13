@@ -460,9 +460,9 @@ CellStruct Partition::most_non_trivial_joins(const Graph& graph) const {
     std::list<std::list<CellStruct>::iterator>::const_iterator it_cell_1 = non_singleton.begin();
     std::list<std::list<CellStruct>::iterator>::const_iterator it_cell_2;
     int current_degree = 0;
-    for (int cell_1=0; cell_1<non_singleton.size(); cell_1++) {            //check for each pair if non-trivially joined
+    for (size_t cell_1=0, end = non_singleton.size(); cell_1<end; cell_1++) {            //check for each pair if non-trivially joined
         it_cell_2 = std::next(it_cell_1,1);                     //excludes checking if non-trivially joined to itself
-        for (int cell_2=cell_1+1; cell_2<non_singleton.size(); cell_2++) {
+        for (size_t cell_2=cell_1+1; cell_2<end; cell_2++) {
 
             decode_cell_2 = std::vector<int>(element_vec.begin()+(*it_cell_2)->first,
                                              element_vec.begin()+(*it_cell_2)->first+(*it_cell_2)->length);
