@@ -21,6 +21,7 @@
  * The matrices are always handled as vectors of vectors containing booleans, this type is shortened to Matrix
  */
 using Graph = std::vector<std::vector<bool>>;
+using Permutation = std::vector<int>;
 
 /*
  * adjacency_matrix(filename) creates an adjacency matrix to a given input graph
@@ -64,6 +65,8 @@ void print_matrix(const Graph& adjacency_matrix);
  * Returns: An n^2-bit string
  */
 std::vector<bool> value_of_graph(const Graph& graph);
+
+std::vector<bool> perm_hash_value(const Graph& graph, Permutation perm);
 
 
 

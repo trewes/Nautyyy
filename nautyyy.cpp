@@ -263,7 +263,7 @@ void Nautyyy::process_leaf() {
 
     if(first_leaf.undiscovered()){                                                              //first encountered leaf
         Permutation leaf_perm = discrete_partition_to_perm(current_partition);
-        std::vector<bool> hash_val = value_of_graph(perm_graph(graph, leaf_perm));
+        std::vector<bool> hash_val = perm_hash_value(graph, leaf_perm);
         first_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);
 
         best_leaf = first_leaf;
@@ -272,7 +272,7 @@ void Nautyyy::process_leaf() {
     }
                                                                //otherwise compare leaf to first_found_leaf or best_leaf
     Permutation leaf_perm = discrete_partition_to_perm(current_partition);
-    std::vector<bool> hash_val = value_of_graph(perm_graph(graph, leaf_perm));
+    std::vector<bool> hash_val = perm_hash_value(graph, leaf_perm);
 
                                                              //there has been a new maximum invariant, update best guess
                                                                                                                     //!not sure about this. definitely best_leaf_outdated_due_to_invariant but idk about hash val >

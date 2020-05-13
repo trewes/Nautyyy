@@ -140,6 +140,20 @@ std::vector<bool> value_of_graph(const Graph& graph) {
 }
 
 
+std::vector<bool> perm_hash_value(const Graph& graph, Permutation perm) {
+    int n = graph.size();
+    std::vector<bool> result(n*n, false);
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+            if(graph[i][j]){                                 //index (i,j) of matrix corresponds to position n*(n-i)-j-1
+                result[n * (n - perm[i]) - perm[j]-1] = true;       //of the string if matrix is written down in a row by row fashion
+            }
+        }
+    }
+    return result;
+}
+
+
 int degree(const Graph& graph, const int& vertex, const std::vector<int>& cell){
     int count = 0;
     for(int i : cell){
