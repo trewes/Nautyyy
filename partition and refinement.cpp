@@ -180,16 +180,17 @@ std::vector<std::vector<int>> Partition::decomposition(
     return decomposition;
 }
 
-std::vector<std::vector<int>> Partition::sp_decomposition(const Graph& graph, const std::vector<int>& cell_v, const std::vector<int>& all_degrees)  {
+std::vector<std::vector<int>>
+Partition::sp_decomposition(const std::vector<int> &cell, const std::vector<int> &all_degrees) {
 
-    if(cell_v.size() == 1){
+    if(cell.size() == 1){
         throw std::runtime_error("A cell of size 1 cannot be decomposed.");
     }
 
     std::vector<std::vector<int>> decomposition;
 
     std::map<int, std::vector<int>> temp{};
-    for (const int &element: cell_v) {
+    for (const int &element: cell) {
         temp[all_degrees[element]].push_back(element);          //put each element into the vector of it's degree
     }
 
@@ -237,7 +238,7 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
 
 
                                                                   //Now decompose the cell by relation to the other cell
-             std::vector<std::vector<int>> vk_decomposition = sp_decomposition(graph, decode_cell, all_degrees);
+             std::vector<std::vector<int>> vk_decomposition = sp_decomposition(decode_cell, all_degrees);
             if (vk_decomposition.size() == 1) {continue;}                     //if there is no decomposition, do nothing
                                                                                       //otherwise: check some conditions
                                                      //check if current cell of the partition is also in the subsequence

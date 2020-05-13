@@ -146,7 +146,8 @@ private:
      *            all_degrees the vector containing the degrees of all vertices into a cell chosen before
      * Returns: A vector of subsets of cell_v in ascending order in regards to their elements degree in all_degrees
      */
-    static std::vector<std::vector<int>> sp_decomposition(const Graph& graph, const std::vector<int>& cell, const std::vector<int>& all_degrees);
+    static std::vector<std::vector<int>>
+    sp_decomposition(const std::vector<int> &cell, const std::vector<int> &all_degrees);
 
 public:
     /*
