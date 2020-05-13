@@ -147,7 +147,7 @@ private:
      * Returns: A vector of subsets of cell_v in ascending order in regards to their elements degree in all_degrees
      */
     static std::vector<std::vector<int>>
-    sp_decomposition(const std::vector<int> &cell, const std::vector<int> &all_degrees);
+    sp_decomposition(const std::vector<int> &cell, std::map<int, int> &all_degrees);
 
 public:
     /*

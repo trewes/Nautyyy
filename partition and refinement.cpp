@@ -181,7 +181,7 @@ std::vector<std::vector<int>> Partition::decomposition(
 }
 
 std::vector<std::vector<int>>
-Partition::sp_decomposition(const std::vector<int> &cell, const std::vector<int> &all_degrees) {
+Partition::sp_decomposition(const std::vector<int> &cell, std::map<int, int> &all_degrees) {
 
     if(cell.size() == 1){
         throw std::runtime_error("A cell of size 1 cannot be decomposed.");
@@ -193,7 +193,6 @@ Partition::sp_decomposition(const std::vector<int> &cell, const std::vector<int>
     for (const int &element: cell) {
         temp[all_degrees[element]].push_back(element);          //put each element into the vector of it's degree
     }
-
     for (const auto &element: temp) {
         decomposition.push_back(element.second);
     }
@@ -217,10 +216,10 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
             //std::cout<<"Slight mishap"<<std::endl;
         //}
                                                          //create the vector all_degress used in decomposing cells later
-        std::vector<int> all_degrees(element_vec.size(), 0);
+        std::map<int, int> all_degrees{};
         for(int w: decode_cell_w){                                             //for all elements of W get all neighbors
             for(Vertex neighbor: graph.vertices[w].edges){          //and so find the degree of neighbor vertices into W
-                all_degrees[neighbor]++;
+                all_degrees[neighbor]+=1;
             }
         }
                                                                      //iterate over non singleton cells of the partition
@@ -232,7 +231,7 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
             std::vector<int> decode_cell = decode_given_cell(*cell);
 
             if (std::all_of(decode_cell.begin(), decode_cell.end(),
-                    [all_degrees](int vertex){return all_degrees[vertex]==0;})){
+                    [&all_degrees](int vertex){return all_degrees.count(vertex)==0;})){
                 continue;                                 //the cell is not a neighbor cell of cell_w, it won't be split
             }
 
