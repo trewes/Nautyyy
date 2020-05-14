@@ -65,7 +65,7 @@ int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, const std:
 
     for(size_t same_untill = 0, max = std::min(first_sequence.size(), second_sequence.size()); same_untill<max; same_untill++){
         if(first_sequence[same_untill] != second_sequence[same_untill]){
-            return same_untill+1;                                     //the level up to which the vertex sequences agree
+            return same_untill+2;                                     //the level up to which the vertex sequences agree
         }
     }
     throw std::runtime_error("Error, the two given leaves are the same.");
@@ -278,7 +278,7 @@ void Nautyyy::process_leaf() {
 
                                                              //there has been a new maximum invariant, update best guess
                                                                                                                     //!not sure about this. definitely best_leaf_outdated_due_to_invariant but idk about hash val >
-    if(best_leaf_outdated_due_to_invariant or hash_val > best_leaf.hash_of_perm_graph){
+    if(best_leaf_outdated_due_to_invariant  or hash_val > best_leaf.hash_of_perm_graph){
         best_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);      //update best canonical node
         stats.best_leaf_updates++;
         backtrack_to(current_level-1);
@@ -290,7 +290,8 @@ void Nautyyy::process_leaf() {
         found_automorphisms.push_back(automorphism);
         stats.automorphisms_found++;
                                                                         //backtrack to level of greatest common ancestor
-        backtrack_to(get_gca_level(first_leaf.vertex_sequence, current_vertex_sequence));
+        //backtrack_to(get_gca_level(first_leaf.vertex_sequence, current_vertex_sequence));
+        backtrack_to(current_level-1);
         return;
     }
                                                       //same but for best leaf. Not explicitly mentioned to do this also
@@ -299,7 +300,8 @@ void Nautyyy::process_leaf() {
          std::vector<int> automorphism = perm_composition(best_leaf.leaf_perm, perm_inverse(leaf_perm));
          found_automorphisms.push_back(automorphism);
          stats.automorphisms_found++;
-         backtrack_to(get_gca_level(best_leaf.vertex_sequence, current_vertex_sequence));
+         //backtrack_to(get_gca_level(best_leaf.vertex_sequence, current_vertex_sequence));
+         backtrack_to(current_level-1);
          return;
      }
                                         //that we got here means hash_val < first or best leaf, do nothing but backtrack
