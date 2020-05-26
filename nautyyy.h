@@ -25,10 +25,10 @@
  * Self-explanatory typedefs of certain types.
  */
 using Graph = Sparse;
-using Permutation = std::vector<int>;
+using Permutation = std::vector<unsigned int>;
 using PermGroup = std::vector<Permutation>;
-using InvarType = std::vector<int>;
-using Vertex = int;
+using InvarType = std::vector<unsigned int>;
+using Vertex = unsigned int;
 
 
 /*
@@ -106,11 +106,11 @@ struct Options{
  * undiscovered(): Whether the Leaf is 'empty' or has been filled with values, i.e. is an actual Leaf
  */
 struct Leaf{
-    std::vector<int> vertex_sequence;
+    std::vector<unsigned int> vertex_sequence;
     Permutation leaf_perm;
     std::vector<bool> hash_of_perm_graph;
     Leaf();
-    Leaf(std::vector<int> in_vertex_sequence, Permutation  in_leaf_perm, std::vector<bool>  hash_val);
+    Leaf(std::vector<unsigned int> in_vertex_sequence, Permutation  in_leaf_perm, std::vector<bool>  hash_val);
     bool undiscovered() const;
 };
 
@@ -172,7 +172,7 @@ private:
     bool first_path_explored = false;
     bool first_path_help = false;
 
-    static int get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence);
+    static unsigned int get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence);
 
     /*
      * search_tree_traversal()

@@ -1,8 +1,5 @@
 #include "nautyyy.h"
 
-#include <utility>
-
-
 
 void Statistics::print() const {
     std::cout<<"Total leaves visited: "<<leaves_visited<<" and automorphisms found: "<<automorphisms_found
@@ -44,13 +41,13 @@ void Statistics::pretty_time() const{
     std::cout<<"."<<std::endl;
 }
 
-Leaf::Leaf(): vertex_sequence(std::vector<int>()), leaf_perm(std::vector<int>()), hash_of_perm_graph(){
+Leaf::Leaf(): vertex_sequence(std::vector<unsigned int>()), leaf_perm(std::vector<unsigned int>()), hash_of_perm_graph(){
 
 }
 
 
 
-Leaf::Leaf(std::vector<int>  in_vertex_sequence, Permutation in_leaf_perm, std::vector<bool>  hash_val)
+Leaf::Leaf(std::vector<unsigned int> in_vertex_sequence, Permutation in_leaf_perm, std::vector<bool>  hash_val)
                          : vertex_sequence(std::move(in_vertex_sequence)), leaf_perm(std::move(in_leaf_perm)),
                            hash_of_perm_graph(std::move(hash_val)){
 
@@ -61,7 +58,7 @@ bool Leaf::undiscovered() const{
 }
 
 
-int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence) {
+unsigned int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence) {
 
     for(size_t same_untill = 0, max = std::min(first_sequence.size(), second_sequence.size()); same_untill<max; same_untill++){
         if(first_sequence[same_untill] != second_sequence[same_untill]){
@@ -204,9 +201,9 @@ void Nautyyy::process_node(){
 
 
 
-    if(0 and ((not opt.explore_first_path) or first_path_explored)){ //!This, how do I fix it
-        current_level++;
-        return;
+    if(((not opt.explore_first_path) or first_path_explored)){ //!This, how do I fix it
+       // current_level++;
+       // return;
     }
 
     prune_by_invar();
@@ -238,7 +235,7 @@ void Nautyyy::process_leaf() {
     }
     //!This, do I even really need firstleaf at all??
      if(hash_val == first_leaf.hash_of_perm_graph){                  //leaves are equivalent, this gives an automorphism
-        std::vector<int> automorphism = perm_composition(first_leaf.leaf_perm, perm_inverse(leaf_perm));
+        Permutation automorphism = perm_composition(first_leaf.leaf_perm, perm_inverse(leaf_perm));
         found_automorphisms.push_back(automorphism);
         stats.automorphisms_found++;
                                                                         //backtrack to level of greatest common ancestor
@@ -249,7 +246,7 @@ void Nautyyy::process_leaf() {
                                                       //same but for best leaf. Not explicitly mentioned to do this also
                                                    //but it makes sense to also use best guess to look for automorphisms
      else if(hash_val == best_leaf.hash_of_perm_graph){
-         std::vector<int> automorphism = perm_composition(best_leaf.leaf_perm, perm_inverse(leaf_perm));
+         Permutation automorphism = perm_composition(best_leaf.leaf_perm, perm_inverse(leaf_perm));
          found_automorphisms.push_back(automorphism);
          stats.automorphisms_found++;
          //backtrack_to(get_gca_level(best_leaf.vertex_sequence, current_vertex_sequence));
@@ -299,7 +296,7 @@ void Nautyyy::prune_by_invar() {
                 new_invar = current_partition.ref_invar;
                 break;
             case Options::num_cells:
-                new_invar = std::vector<int>{current_partition.number_of_cells()};
+                new_invar = InvarType{current_partition.number_of_cells()};
                 break;
         }
     }

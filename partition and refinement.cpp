@@ -1,7 +1,7 @@
 #include "partition and refinement.h"
 
 
-CellStruct::CellStruct(int input_first, int input_length, int input_in_level)             //simply initialise the fields
+CellStruct::CellStruct(unsigned int input_first, unsigned int input_length, unsigned int input_in_level)             //simply initialise the fields
         :first(input_first), length(input_length), in_level(input_in_level){
 }
 
@@ -11,14 +11,14 @@ bool CellStruct::operator==(const CellStruct &rhs) const {     //two CellStructs
 
 Partition::Partition(): element_vec(std::vector<Vertex>()), lcs(std::list<CellStruct>()),
     in_cell(std::vector<std::list<CellStruct>::iterator>()), non_singleton(std::list<std::list<CellStruct>::iterator>()),
-    level(0), refinement_stacks(std::vector<std::stack<int>>()) {
+    level(0), refinement_stacks(std::vector<std::stack<unsigned int>>()) {
                                                                                             //init everything to nothing
 }
 
 
-Partition::Partition(int n): element_vec(std::vector<Vertex>(n)),//unit partition, n elements, a single cell of size one
+Partition::Partition(unsigned int n): element_vec(std::vector<Vertex>(n)),//unit partition, n elements, a single cell of size one
                              lcs(std::list<CellStruct>(1, CellStruct(0, n, 1))),
-                             non_singleton(std::list<std::list<CellStruct>::iterator>()){  //init non_singleton as empty
+                                      non_singleton(std::list<std::list<CellStruct>::iterator>()){  //init non_singleton as empty
     if(n<1){
         throw std::runtime_error("Partition must be of positive size");
     }
@@ -30,7 +30,7 @@ Partition::Partition(int n): element_vec(std::vector<Vertex>(n)),//unit partitio
 
 
     level = 0;                                          //Partition before first refinement is not used in tree, level 0
-    refinement_stacks = std::vector<std::stack<int>>();
+    refinement_stacks = std::vector<std::stack<unsigned int>>();
 }
 
 Partition::Partition(const std::vector<std::vector<Vertex>> &other_format_partition)
@@ -55,7 +55,7 @@ Partition::Partition(const std::vector<std::vector<Vertex>> &other_format_partit
 
 
     level = 0;                                          //Partition before first refinement is not used in tree, level 0
-    refinement_stacks = std::vector<std::stack<int>>();
+    refinement_stacks = std::vector<std::stack<unsigned int>>();
 }
 
 
@@ -106,7 +106,7 @@ void Partition::print() const{
     std::cout<<"[";
     for(auto cell: lcs){                              //for each CellStruct print the elements of the cell in a nice way
         std::cout<<"[";
-        for(int i=0; i<cell.length-1; i++){
+        for(unsigned int i=0; i<cell.length-1; i++){
             std::cout << element_vec[cell.first+i] << ",";
         }
         std::cout << element_vec[cell.first+cell.length-1] << "]";
@@ -117,7 +117,7 @@ void Partition::print_detail() const{
     std::cout<<"[";
     for(auto cell: lcs){                              //for each CellStruct print the elements of the cell in a nice way
         std::cout<<"[";
-        for(int i=0; i<cell.length-1; i++){
+        for(unsigned int i=0; i<cell.length-1; i++){
             std::cout << element_vec[cell.first+i] << ",";
         }
         std::cout << element_vec[cell.first+cell.length-1] << "]";
@@ -135,7 +135,7 @@ void Partition::print_non_singleton() const{
     std::cout<<"[";
     for(auto cell: non_singleton){      //for each CellStruct larger than 1 print the elements of the cell in a nice way
         std::cout<<"[";
-        for(int i=0; i<cell->length-1; i++){
+        for(unsigned int i=0; i<cell->length-1; i++){
             std::cout << element_vec[cell->first+i] << ",";
         }
         std::cout << element_vec[cell->first+cell->length-1] << "]";
@@ -146,20 +146,20 @@ bool Partition::is_discrete() const{
     return non_singleton.empty();
 }
 
-int Partition::get_size() const {
+unsigned int Partition::get_size() const {
     return element_vec.size();
 }
 
-int Partition::number_of_cells() const{
+unsigned int Partition::number_of_cells() const{
     return lcs.size();
 }
 
-int Partition::get_first_of_cell(const int& element) const{
+Vertex Partition::get_first_of_cell(const unsigned int &element) const{
     return in_cell[element]->first;
 }
 
 std::vector<Vertex> Partition::decode_given_cell(const CellStruct& cell) const{
-    return std::vector<int>(element_vec.begin()+cell.first,
+    return std::vector<Vertex>(element_vec.begin()+cell.first,
                      element_vec.begin()+cell.first+cell.length);
 }
 
@@ -180,17 +180,17 @@ std::vector<std::vector<int>> Partition::decomposition(
     return decomposition;
 }
 
-std::vector<std::vector<int>>
-Partition::sp_decomposition(const std::vector<int> &cell, std::map<int, int> &all_degrees) {
+std::vector<std::vector<unsigned int>>
+Partition::sp_decomposition(const std::vector<unsigned int> &cell, std::map<unsigned int, unsigned int> &all_degrees) {
 
     if(cell.size() == 1){
         throw std::runtime_error("A cell of size 1 cannot be decomposed.");
     }
 
-    std::vector<std::vector<int>> decomposition;
+    std::vector<std::vector<unsigned int>> decomposition;
 
-    std::map<int, std::vector<int>> temp{};
-    for (const int &element: cell) {
+    std::map<unsigned int, std::vector<unsigned int>> temp{};
+    for (const unsigned int &element: cell) {
         temp[all_degrees[element]].push_back(element);          //put each element into the vector of it's degree
     }
     for (const auto &element: temp) {
@@ -208,7 +208,7 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
     while((not is_discrete()) and (not subsequence.empty())){
                                                         //get (and later remove) the first cell of the given subsequence
                                                         //get the vertices that are represented by the chosen CellStruct
-        std::vector<int> decode_cell_w = decode_given_cell(subsequence.front());
+        std::vector<Vertex> decode_cell_w = decode_given_cell(subsequence.front());
         subsequence.erase(subsequence.begin());
         //if(not is_sorted(decode_cell_w.begin(), decode_cell_w.end())){
             //std::sort(decode_cell_w.begin(), decode_cell_w.end());
@@ -216,7 +216,7 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
             //std::cout<<"Slight mishap"<<std::endl;
         //}
                                                          //create the vector all_degress used in decomposing cells later
-        std::map<int, int> all_degrees{};
+        std::map<unsigned int, unsigned int> all_degrees{};
         for(int w: decode_cell_w){                                             //for all elements of W get all neighbors
             for(Vertex neighbor: graph.vertices[w].edges){          //and so find the degree of neighbor vertices into W
                 all_degrees[neighbor]+=1;
@@ -228,7 +228,7 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
 
               std::list<CellStruct>::iterator cell = *cell_it;       //get the iterator in lcs of the non-singleton cell
                                                                 //as above, get vertices represented by the current cell
-            std::vector<int> decode_cell = decode_given_cell(*cell);
+            std::vector<Vertex> decode_cell = decode_given_cell(*cell);
 
             if (std::all_of(decode_cell.begin(), decode_cell.end(),
                     [&all_degrees](int vertex){return all_degrees.count(vertex)==0;})){
@@ -237,23 +237,23 @@ void Partition::refinement(const Graph& graph, std::list<CellStruct> subsequence
 
 
                                                                   //Now decompose the cell by relation to the other cell
-             std::vector<std::vector<int>> vk_decomposition = sp_decomposition(decode_cell, all_degrees);
+             std::vector<std::vector<unsigned int>> vk_decomposition = sp_decomposition(decode_cell, all_degrees);
             if (vk_decomposition.size() == 1) {continue;}                     //if there is no decomposition, do nothing
                                                                                       //otherwise: check some conditions
                                                      //check if current cell of the partition is also in the subsequence
             bool cell_in_subsequence = false;
             auto pos_in_subsequence = std::find(subsequence.begin(), subsequence.end(), *cell);
-            std::vector<int> first_largest_splitter{};
+            std::vector<unsigned int> first_largest_splitter{};
             if ((not subsequence.empty()) and pos_in_subsequence != subsequence.end()) {
                 cell_in_subsequence = true;
             } else {
                 first_largest_splitter = *std::max_element(vk_decomposition.begin(), vk_decomposition.end(),
-                        [](const std::vector<int> &cell_a,const std::vector<int> &cell_b) {
+                        [](const std::vector<unsigned int> &cell_a,const std::vector<unsigned int> &cell_b) {
                                                                return cell_a.size() < cell_b.size();});
             }
 
-            int first = cell->first;                                                     //update pi and the subsequence
-            for (const std::vector<int> &splitter: vk_decomposition) {
+            unsigned int first = cell->first;                                                     //update pi and the subsequence
+            for (const std::vector<unsigned int> &splitter: vk_decomposition) {
                                       //create a new cell at level+1, size of the splitter and corresponding first field
                                                                   //and emplace it into position before the current cell
                 auto new_cell_it = lcs.emplace(cell, first, splitter.size(), level+1);
@@ -368,12 +368,12 @@ void Partition::merge_cells(std::list<CellStruct>::iterator first_cell, std::lis
     lcs.erase(std::next(first_cell, 1), std::next(last_cell,1));
 }
 
-void Partition::reconstruct_at_level(int return_level) {
+void Partition::reconstruct_at_level(unsigned int return_level) {
     if(return_level<1){
         throw std::runtime_error("Cannot return to level before root.");
     }
                                                     //get the stack containing the info to backtrack to the wanted level
-    std::stack<int>& bt_stack= refinement_stacks[return_level-1];
+    std::stack<unsigned int>& bt_stack= refinement_stacks[return_level-1];
     while(not bt_stack.empty()){                                            //for each split merge again the split cells
                                                  //these are all the cells after first with a higher in_level value than
                                                     //the return_level plus the first with in_level at most return_level
@@ -459,7 +459,7 @@ CellStruct Partition::most_non_trivial_joins(const Graph& graph) const {
     std::vector<int> decode_cell_2 = std::vector<int>();
     std::list<std::list<CellStruct>::iterator>::const_iterator it_cell_1 = non_singleton.begin();
     std::list<std::list<CellStruct>::iterator>::const_iterator it_cell_2;
-    int current_degree = 0;
+    unsigned int current_degree = 0;
     for (size_t cell_1=0, end = non_singleton.size(); cell_1<end; cell_1++) {            //check for each pair if non-trivially joined
         it_cell_2 = std::next(it_cell_1,1);                     //excludes checking if non-trivially joined to itself
         for (size_t cell_2=cell_1+1; cell_2<end; cell_2++) {

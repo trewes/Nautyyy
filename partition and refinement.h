@@ -49,8 +49,8 @@
  * Vertex is used when representing what is supposed to be a vertex
  */
 using Graph = Sparse;
-using InvarType = std::vector<int>;
-using Vertex = int; //unsigned
+using InvarType = std::vector<unsigned int>;
+using Vertex = unsigned int; //unsigned
 
 /*
  * CellStruct
@@ -63,10 +63,10 @@ using Vertex = int; //unsigned
  * And an equal operator, returning true if all fields are equal.
  */
 struct CellStruct{
-    int first;
-    int length;
-    int in_level;
-    CellStruct(int input_first, int input_length, int input_in_level);
+    unsigned int first;
+    unsigned int length;
+    unsigned int in_level;
+    CellStruct(unsigned int input_first, unsigned int input_length, unsigned int input_in_level);
     bool operator==(const CellStruct& rhs) const;
 };
 
@@ -106,11 +106,11 @@ private:
     std::list<CellStruct> lcs;
     std::vector<std::list<CellStruct>::iterator> in_cell;
     std::list<std::list<CellStruct>::iterator> non_singleton;
-    int level;
-    std::vector<std::stack<int>> refinement_stacks;
+    unsigned int level;
+    std::vector<std::stack<unsigned int>> refinement_stacks;
 public:
     explicit Partition();
-    explicit Partition(int n);
+    explicit Partition(unsigned int n);
     explicit Partition(const std::vector<std::vector<Vertex>> &other_format_partition);
     Partition(const Partition& old);
     Partition& operator=(const Partition& rhs);
@@ -118,9 +118,9 @@ public:
     void print_detail() const;
     void print_non_singleton() const;
     bool is_discrete() const;
-    int get_size() const;
-    int number_of_cells() const;
-    int get_first_of_cell(const int& element) const;
+    unsigned int get_size() const;
+    unsigned int number_of_cells() const;
+    Vertex get_first_of_cell(const unsigned int &element) const;
     std::vector<Vertex> decode_given_cell(const CellStruct& cell) const;
 
 
@@ -146,8 +146,8 @@ private:
      *            all_degrees the vector containing the degrees of all vertices into a cell chosen before
      * Returns: A vector of subsets of cell_v in ascending order in regards to their elements degree in all_degrees
      */
-    static std::vector<std::vector<int>>
-    sp_decomposition(const std::vector<int> &cell, std::map<int, int> &all_degrees);
+    static std::vector<std::vector<unsigned int>>
+    sp_decomposition(const std::vector<unsigned int> &cell, std::map<unsigned int, unsigned int> &all_degrees);
 
 public:
     /*
@@ -199,7 +199,7 @@ public:
      *
      * Action: The partition is now the one it was at the given level
      */
-    void reconstruct_at_level(int return_level);
+    void reconstruct_at_level(unsigned int return_level);
 
 
 

@@ -22,7 +22,7 @@
  * As vertex type we use int and Permutations are handled as integer vector
  */
 using Vtype = int;
-using Permutation = std::vector<int>;
+using Permutation = std::vector<unsigned int>;
 
 
 /*
@@ -54,7 +54,7 @@ class Sparse{
 public:
     std::vector<Vertex> vertices;
     void add_edge(Vtype v1, Vtype v2);
-    explicit Sparse(int num_vertices);
+    explicit Sparse(unsigned int num_vertices);
     void print() const;
     unsigned int nof_vertices() const;
 
@@ -108,7 +108,7 @@ public:
      * Same as hash_value but returns the hash of the graph one would get after permuting the graph according to perm.
      * This is better since an explicit construction of the permuted graph is not needed.
      */
-    std::vector<bool> perm_hash_value(const std::vector<int> &perm) const;
+    std::vector<bool> perm_hash_value(const Permutation& perm) const;
 
 };
 

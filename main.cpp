@@ -4,6 +4,7 @@
 #include <random>
 
 #include "nautyyy.h"
+using Permutation = std::vector<unsigned int>;
 
 
 void print_help(){
@@ -65,7 +66,7 @@ int main(int argc, char* argv[]) {
                     nauty_settings.invarmethod = Options::refinement;
                 }
                 else if(*optarg=='c'){
-                    nauty_settings.invarmethod = Options::refinement;
+                    nauty_settings.invarmethod = Options::num_cells;
                 }
                 else{
                     std::cout<<"The invarmethod was not correctly specified."<<std::endl;
@@ -102,7 +103,7 @@ int main(int argc, char* argv[]) {
         Graph g = Sparse(file1);
         Nautyyy g_nautyyy(g, nauty_settings);
 
-        std::vector<int> perm(g.nof_vertices());
+        Permutation perm(g.nof_vertices());
         std::iota(perm.begin(), perm.end(), 0);
 
 

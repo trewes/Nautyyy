@@ -11,15 +11,15 @@ Permutation discrete_partition_to_perm(const Partition& partition) {
     if(not partition.is_discrete()){
         throw std::runtime_error("The partition is not discrete and therefore not a permutation.");
     }
-    std::vector<int> perm(partition.get_size());
-    for(int i=0; i<partition.get_size(); i++){
+    Permutation perm(partition.get_size());
+    for(unsigned int i=0; i<partition.get_size(); i++){
         perm[i] = partition.get_first_of_cell(i);                          //element i is sent to cell in_cell[i]->first
     }                                                                      //i.e. to what position it has in element_vec
     return perm;
 }
 
 Permutation perm_inverse(const Permutation& perm) {
-    std::vector<int> inverse(perm.size());
+    Permutation inverse(perm.size());
     for(size_t i=0, max = perm.size(); i<max; i++){
         inverse[perm[i]] = i;
     }
@@ -37,8 +37,8 @@ Permutation perm_composition(const Permutation& first_perm, const Permutation& s
     return product;
 }
 
-std::vector<int> apply_perm(std::vector<int> vector, const Permutation& perm) {
-    for(int & i : vector){
+std::vector<unsigned int> apply_perm(std::vector<unsigned int> vector, const Permutation& perm) {
+    for(unsigned & i : vector){
         if(i>= perm.size()){
             throw std::runtime_error("Elements of the subset are out of range of the permutation.");
         }
@@ -49,11 +49,11 @@ std::vector<int> apply_perm(std::vector<int> vector, const Permutation& perm) {
 
 void print_perm(const Permutation& perm) {                           //prints a permutation in it's cycle representation
 
-    if(all_of(perm.begin(), perm.end(), [perm](int i){return perm[i]==i;})){
+    if(all_of(perm.begin(), perm.end(), [perm](unsigned int i){return perm[i]==i;})){
         std::cout<<"Identity"<<std::endl;                                                     //the identity permutation
         return;
     }
-    std::vector<int> visited(perm.size(), 0);
+    std::vector<unsigned int> visited(perm.size(), 0);
     int temp;
     for(size_t i=0, max = visited.size(); i<max; i++) {
         if ((not visited[i]) and (perm[i]!=i)) {                //extra condition to exclude elements sent to themselves
@@ -89,8 +89,8 @@ Graph perm_graph(const Graph& graph, const Permutation& perm) {
 
 
 
-bool is_fixed(const Permutation& perm, const std::vector<int> &sequence){
-    for(const int& i: sequence){
+bool is_fixed(const Permutation& perm, const std::vector<unsigned int> &sequence){
+    for(const unsigned int& i: sequence){
         if(perm[i] != i){
             return false;
         }
@@ -98,7 +98,7 @@ bool is_fixed(const Permutation& perm, const std::vector<int> &sequence){
     return true;
 }
 
-PermGroup subgroup_fixing_sequence(const PermGroup &permutations, const std::vector<int> &sequence) {
+PermGroup subgroup_fixing_sequence(const PermGroup &permutations, const std::vector<unsigned int> &sequence) {
     PermGroup subgroup = PermGroup();
     for(const Permutation& perm: permutations){
         if(is_fixed(perm, sequence)){
@@ -110,13 +110,13 @@ PermGroup subgroup_fixing_sequence(const PermGroup &permutations, const std::vec
 
 
 //! needs comments
-std::vector<int> mcrs(const PermGroup &permutations, const std::vector<int> &sequence) {
+std::vector<unsigned int> mcrs(const PermGroup &permutations, const std::vector<unsigned int> &sequence) {
     if(permutations.empty()){
         throw std::runtime_error("There are no permutations.");
     }
 
-    std::vector<int> result = std::vector<int>();
-    std::vector<int> visited(permutations[0].size(), 0);
+    std::vector<unsigned int> result = std::vector<unsigned int>();
+    std::vector<unsigned int> visited(permutations[0].size(), 0);
     PermGroup subgroup = subgroup_fixing_sequence(permutations, sequence);
     int temp;
     for(size_t i=0, max = visited.size(); i<max; i++) {

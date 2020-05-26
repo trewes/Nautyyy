@@ -22,7 +22,7 @@ unsigned int Sparse::nof_vertices() const {
     return vertices.size();
 }
 
-Sparse::Sparse(int num_vertices): vertices(std::vector<Vertex>(num_vertices)){
+Sparse::Sparse(unsigned int num_vertices): vertices(std::vector<Vertex>(num_vertices)){
 
 }
 
@@ -58,7 +58,9 @@ Sparse::Sparse(const char *filename) {
     //when there is a space in the right place, it is of format 1. Exception that space is encountered at end is handled
     if(space_pos != line.end() and (std::next(space_pos,1) != line.end())){                     //File is of Format 1
         do{
-            std::stringstream ss(line);
+            ss.clear();
+            ss.str(std::string());
+            ss << line;
             int tail, head;
             ss >> tail >> head;
             if (not ss) {                                                          //each line must give a tail and head
@@ -74,7 +76,9 @@ Sparse::Sparse(const char *filename) {
     }
     else{                                                                                          //File is of Format 2
         for(int tail=0; tail<num_nodes; tail++) {
-            std::stringstream ss(line);
+            ss.clear();
+            ss.str(std::string());
+            ss << line;
             std::string edges;
             ss >> edges;
 
@@ -117,9 +121,13 @@ void Sparse::dimacs(char const* filename){
     vertices.resize(n);
 
     std::getline(file, line);
+    bool aux_color = false;
     while(line[0] == 'n'){
-        std::cout<<"This program does not handle color assignment of\n"
-                   "vertices so lines with n at the beginning are ignored."<<std::endl;
+        if(not aux_color) {
+            std::cout << "This program does not handle color assignment of\n"
+                         "vertices so lines with n at the beginning are ignored." << std::endl;
+        aux_color = true;
+        }
         std::getline(file, line);
     }
 
@@ -128,7 +136,9 @@ void Sparse::dimacs(char const* filename){
     char first;
     int head, tail;
     do {
-        std::stringstream ss(line);
+        ss.clear();
+        ss.str(std::string());
+        ss << line;
         ss >> first >> head >> tail;
         add_edge(head - offset,tail - offset);
     }
@@ -173,10 +183,10 @@ std::vector<bool> Sparse::hash_value() const{
 
 
 std::vector<bool> Sparse::perm_hash_value(const Permutation& perm) const{
-    int n = nof_vertices();
+    unsigned int n = nof_vertices();
     std::vector<bool> result(n*n, false);
 
-    for(int i=0; i<n; i++){
+    for(unsigned int i=0; i<n; i++){
         for(auto j: vertices[i].edges){
             result[n * (n - perm[i]) - perm[j]-1] = true;                    //check existence of permuted edges instead
         }
