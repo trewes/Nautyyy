@@ -76,7 +76,7 @@ std::vector<bool> perm_hash_value(const Graph& graph, Permutation perm);
  * Parameter: The graph, a vertex of it, and a subset of it's vertices
  * Returns: The count of Edges going from vertex to the cell
  */
-unsigned int degree(const Graph& graph, const unsigned int &vertex, const std::vector<unsigned int> &cell);
+std::pair<unsigned  int, unsigned int> degree(const Graph& graph, const unsigned int &vertex, const std::vector<unsigned int> &cell);
 
 
 

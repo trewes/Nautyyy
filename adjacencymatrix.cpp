@@ -40,9 +40,8 @@ Graph adjacency_matrix(char const* filename){
             if (not ss) {                                                          //each line must give a tail and head
                 throw std::runtime_error("Invalid file format, not the correct edge format.");
             }
-            if (tail != head or graph[tail][head] != true) {                        //graph is supposed to be undirected
+            if (tail != head) {
                 graph[tail][head] = true;
-                graph[head][tail] = true;
             }
             else {
                 throw std::runtime_error("Invalid file format: loops and parallel edges not allowed.");
@@ -113,7 +112,6 @@ Graph dimacs(char const* filename){
         ss << line;
         ss >> first >> head >> tail;
         graph[head - offset][tail - offset] = true;
-        graph[tail - offset][head - offset] = true;
     }
     while (std::getline(file, line));
     return graph;
@@ -160,11 +158,14 @@ std::vector<bool> perm_hash_value(const Graph& graph, Permutation perm) {
 }
 
 
-unsigned int degree(const Graph& graph, const unsigned int &vertex, const std::vector<unsigned int> &cell){
-    unsigned int count = 0;
+std::pair<unsigned  int, unsigned int> degree(const Graph& graph, const unsigned int &vertex, const std::vector<unsigned int> &cell){
+    std::pair<unsigned  int, unsigned int> count = {0,0};
     for(unsigned int i : cell){
         if(graph[vertex][i]){                         //there is an edge going from vertex into the cell, increase count
-            count++;
+            count.first++;
+        }
+        if(graph[i][vertex]){                       //there is an edge going from the cell to the vertex, increase count
+            count.second++;
         }
     }
     return count;

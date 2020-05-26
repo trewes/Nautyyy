@@ -169,7 +169,7 @@ std::vector<std::vector<unsigned int>> Partition::decomposition(
     if(cell_v.size() == 1){
         throw std::runtime_error("A cell of size 1 cannot be decomposed.");
     }
-    std::map<unsigned int, std::vector<unsigned int>> temp{};
+    std::map<std::pair<unsigned  int, unsigned int>, std::vector<unsigned int>> temp{};
     for(const unsigned int& element: cell_v){
         temp[degree(graph, element, cell_w)].push_back(element);       //put each element into the vector of it's degree
     }
@@ -419,7 +419,7 @@ CellStruct Partition::most_non_trivial_joins(const Graph& graph) const {
     std::vector<unsigned int> decode_cell_2 = std::vector<unsigned int>();
     std::list<std::list<CellStruct>::iterator>::const_iterator it_cell_1 = non_singleton.begin();
     std::list<std::list<CellStruct>::iterator>::const_iterator it_cell_2;
-    unsigned int current_degree = 0;
+    std::pair<unsigned  int, unsigned int> current_degree = {0,0};
     for (unsigned int cell_1=0; cell_1<non_singleton.size(); cell_1++) {            //check for each pair if non-trivially joined
         it_cell_2 = std::next(it_cell_1,1);                     //excludes checking if non-trivially joined to itself
         for (unsigned int cell_2=cell_1+1; cell_2<non_singleton.size(); cell_2++) {
@@ -428,8 +428,8 @@ CellStruct Partition::most_non_trivial_joins(const Graph& graph) const {
                                              element_vec.begin()+(*it_cell_2)->first+(*it_cell_2)->length);
 
             current_degree = degree(graph, element_vec[(*it_cell_1)->first], decode_cell_2);
-            if ((0 < current_degree)
-                and (current_degree < (*it_cell_2)->length)) {
+            if ((0 < (current_degree.first+current_degree.second))
+                and ((current_degree.first+current_degree.second) < (*it_cell_2)->length)) {
                 count[cell_1]++;
                 count[cell_2]++;
             }
