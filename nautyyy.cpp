@@ -65,7 +65,7 @@ int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, const std:
 
     for(size_t same_untill = 0, max = std::min(first_sequence.size(), second_sequence.size()); same_untill<max; same_untill++){
         if(first_sequence[same_untill] != second_sequence[same_untill]){
-            return same_untill+2;                                     //the level up to which the vertex sequences agree
+            return same_untill+1;                                     //the level up to which the vertex sequences agree
         }
     }
     throw std::runtime_error("Error, the two given leaves are the same.");
@@ -130,9 +130,6 @@ Nautyyy::Nautyyy(Graph  in_graph, Options options)
 void Nautyyy::search_tree_traversal() {
 
     while(current_level>=1) {
-        if(current_level > stats.max_level){
-            stats.max_level = current_level;
-        }
         if (not current_partition.is_discrete()) {
             process_node();
         } else {
@@ -145,7 +142,7 @@ void Nautyyy::search_tree_traversal() {
     stats.execution_time = (end_time-stats.start_time);
 
     if(opt.print_stats){
-        stats.print();              //print optional statistics about the execution of the algorithm
+        stats.print();                                  //print optional statistics about the execution of the algorithm
     }
     if(opt.print_time)
     {
@@ -206,25 +203,105 @@ void Nautyyy::process_node(){
     stats.refinements_made++;
 
 
-    //invar on leaves is different (it is the perm graph for now) and is considered as always greater than
-    //any node invar. This is what I think it means for pruning, so far it works best
-    if(current_partition.is_discrete()){
+
+    if(0 and ((not opt.explore_first_path) or first_path_explored)){ //!This, how do I fix it
         current_level++;
         return;
     }
 
-    InvarType new_invar;
-    switch (opt.invarmethod) {                                          //decide which kind of invar is used for pruning
+    prune_by_invar();
+}
 
-        case Options::none:
-            current_level++;                                                                                //no pruning
-            return;
-        case Options::shape:
-            new_invar = current_partition.shape_invar();
-            break;
-        case Options::refinement:
-            new_invar = current_partition.ref_invar;
-            break;
+void Nautyyy::process_leaf() {
+
+    Permutation leaf_perm = discrete_partition_to_perm(current_partition);
+    std::vector<bool> hash_val = graph.perm_hash_value(leaf_perm);
+
+    if(current_level > stats.max_level){
+        stats.max_level = current_level;
+    }
+
+    if(first_leaf.undiscovered()){                                                              //first encountered leaf
+        first_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);
+        best_leaf = first_leaf;
+        backtrack_to(current_level-1);
+        return;
+    }
+                                                               //otherwise compare leaf to first_found_leaf or best_leaf
+                                                             //there has been a new maximum invariant, update best guess
+    if(best_leaf_outdated_due_to_invariant  or hash_val > best_leaf.hash_of_perm_graph){
+        best_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);      //update best canonical node
+        stats.best_leaf_updates++;
+        backtrack_to(current_level-1);
+        best_leaf_outdated_due_to_invariant=false;
+        return;
+    }
+    //!This, do I even really need firstleaf at all??
+     if(hash_val == first_leaf.hash_of_perm_graph){                  //leaves are equivalent, this gives an automorphism
+        std::vector<int> automorphism = perm_composition(first_leaf.leaf_perm, perm_inverse(leaf_perm));
+        found_automorphisms.push_back(automorphism);
+        stats.automorphisms_found++;
+                                                                        //backtrack to level of greatest common ancestor
+        //backtrack_to(get_gca_level(first_leaf.vertex_sequence, current_vertex_sequence));
+        backtrack_to(current_level-1);
+        return;
+    }
+                                                      //same but for best leaf. Not explicitly mentioned to do this also
+                                                   //but it makes sense to also use best guess to look for automorphisms
+     else if(hash_val == best_leaf.hash_of_perm_graph){
+         std::vector<int> automorphism = perm_composition(best_leaf.leaf_perm, perm_inverse(leaf_perm));
+         found_automorphisms.push_back(automorphism);
+         stats.automorphisms_found++;
+         //backtrack_to(get_gca_level(best_leaf.vertex_sequence, current_vertex_sequence));
+         backtrack_to(current_level-1);
+         return;
+     }
+                                        //that we got here means hash_val < first or best leaf, do nothing but backtrack
+     stats.num_bad_leaves++;
+     backtrack_to(current_level-1);
+}
+
+
+
+void Nautyyy::backtrack_to(unsigned int level) {
+    stats.times_backtracked++;
+    if(level==0){                                                         //handles the case of the algorithm being done
+        current_level = level;                           //sets level to 0 so while loop in search_tree_traversal() ends
+        return;
+    }
+    current_partition.reconstruct_at_level(level);                               //get old partition at the wanted level
+    current_vertex_sequence.resize(level-1);       //return to old vertex sequence, simply remove later vertices
+    unbranched.resize(level);                                     //later unbranched do not matter anymore, new path now
+    current_level = level;
+}
+
+
+
+void Nautyyy::prune_by_invar() {
+
+    if(opt.invarmethod==Options::none){
+        throw std::runtime_error("Set to not prune by invar, one should not reach this point.");
+    }
+
+    InvarType new_invar{};
+    if(current_partition.is_discrete() and (not (opt.invarmethod==Options::none))){
+        new_invar.push_back(std::numeric_limits<int>::max());            //assert that leaves are considered as greatest
+    }
+    else{                                                                      //otherwise use invariant of normal nodes
+        switch (opt.invarmethod) {
+            case Options::none:                                                    //no pruning, simply go to next level
+                current_level++;
+                return;
+            case Options::shape:
+                new_invar = current_partition.shape_invar();
+                break;
+            case Options::refinement:
+                new_invar = current_partition.ref_invar;
+                break;
+            case Options::num_cells:
+                new_invar = std::vector<int>{current_partition.number_of_cells()};
+                break;
+        }
     }
                            //comparing of invariant. This is pruning method Pa and assures that a canonical node remains
     if(max_invar_at_level.size() < current_level){                   //has there been an invariant on this level before?
@@ -248,80 +325,11 @@ void Nautyyy::process_node(){
         current_level++;
         return;
     }
-                         //we either (do not skip pruning by invar for first path) or (are already done with first path)
-    else if(not opt.explore_first_path or first_path_explored){
-                                //smaller invariant, don't further explore this child and reconstruct previous partition
+        //we either (do not skip pruning by invar for first path) or (are already done with first path)
+    else {
+        //smaller invariant, don't further explore this child and reconstruct previous partition
         current_partition.reconstruct_at_level(current_level);
         stats.num_pruned_by_invar++;
         return;
     }
-    else{
-        current_level++;
-    }
-
 }
-
-void Nautyyy::process_leaf() {
-
-    if(first_leaf.undiscovered()){                                                              //first encountered leaf
-        Permutation leaf_perm = discrete_partition_to_perm(current_partition);
-        std::vector<bool> hash_val = graph.perm_hash_value(leaf_perm);
-        first_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);
-
-        best_leaf = first_leaf;
-        backtrack_to(current_level-1);
-        return;
-    }
-                                                               //otherwise compare leaf to first_found_leaf or best_leaf
-    Permutation leaf_perm = discrete_partition_to_perm(current_partition);
-    std::vector<bool> hash_val = graph.perm_hash_value(leaf_perm);
-
-                                                             //there has been a new maximum invariant, update best guess
-                                                                                                                    //!not sure about this. definitely best_leaf_outdated_due_to_invariant but idk about hash val >
-    if(best_leaf_outdated_due_to_invariant  or hash_val > best_leaf.hash_of_perm_graph){
-        best_leaf = Leaf(current_vertex_sequence, leaf_perm, hash_val);      //update best canonical node
-        stats.best_leaf_updates++;
-        backtrack_to(current_level-1);
-        best_leaf_outdated_due_to_invariant=false;
-        return;
-    }
-     if(hash_val == first_leaf.hash_of_perm_graph){                  //leaves are equivalent, this gives an automorphism
-        std::vector<int> automorphism = perm_composition(first_leaf.leaf_perm, perm_inverse(leaf_perm));
-        found_automorphisms.push_back(automorphism);
-        stats.automorphisms_found++;
-                                                                        //backtrack to level of greatest common ancestor
-        //backtrack_to(get_gca_level(first_leaf.vertex_sequence, current_vertex_sequence));
-        backtrack_to(current_level-1);
-        return;
-    }
-                                                      //same but for best leaf. Not explicitly mentioned to do this also
-                                                   //but it makes sense to also use best guess to look for automorphisms
-     else if(hash_val == best_leaf.hash_of_perm_graph){
-         std::vector<int> automorphism = perm_composition(best_leaf.leaf_perm, perm_inverse(leaf_perm));
-         found_automorphisms.push_back(automorphism);
-         stats.automorphisms_found++;
-         //backtrack_to(get_gca_level(best_leaf.vertex_sequence, current_vertex_sequence));
-         backtrack_to(current_level-1);
-         return;
-     }
-                                        //that we got here means hash_val < first or best leaf, do nothing but backtrack
-     stats.num_bad_leaves++;
-    backtrack_to(current_level-1);
-}
-
-
-
-void Nautyyy::backtrack_to(int level) {
-    stats.times_backtracked++;
-    if(level==0){                                                         //handles the case of the algorithm being done
-        current_level = level;                           //sets level to 0 so while loop in search_tree_traversal() ends
-        return;
-    }
-    current_partition.reconstruct_at_level(level);                               //get old partition at the wanted level
-    current_vertex_sequence.resize(level-1);       //return to old vertex sequence, simply remove later vertices
-    unbranched.resize(level);                                     //later unbranched do not matter anymore, new path now
-    current_level = level;
-}
-
-
-

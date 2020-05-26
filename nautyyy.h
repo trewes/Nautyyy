@@ -65,6 +65,7 @@ struct Statistics{
  * invarmethod: determines which node invariant is used for pruning. none means no pruning is done,
  *              shape is the invariant of a vector of the cell sizes of a partition
  *              refinement consists of info collected during refinement, here: all sizes of ocurring shattered cells
+ *              num_cells is just the number of cells in the current partition
  * targetcellmethod: determines what target cell is selected, for further info see partition and refinement.h
  *                   reminder: options are first, first_smallest and joins
  * explore_first_path: A consideration is to not prune by node invariant while exploring the first path (first child of
@@ -79,7 +80,7 @@ struct Statistics{
  *
  */
 struct Options{
-    enum InvarMethod {none, shape, refinement};
+    enum InvarMethod {none, shape, refinement, num_cells};
     InvarMethod invarmethod = shape;
     Partition::TargetcellMethod targetcellmethod = Partition::first;
     bool explore_first_path = true;
@@ -192,6 +193,16 @@ private:
      */
     void process_node();
     /*
+     * prune_by_invar()
+     *
+     * Handles the pruning of a node.
+     * On non-leaf nodes it gets the in opt:invarmethod specified Invar, compares it to ones already found and either
+     * updates maximal invariant, simply goes to the next level or prunes the current node and backtracks to parent.
+     * On leaves it only asserts that the leaf is considered greatest, the pruning or rather updating of the best_leaf
+     * is handled separately in process_node().
+     */
+    void prune_by_invar();
+    /*
      * process_leaf()
      *
      * Handles the particulars of encountering a leaf
@@ -210,7 +221,7 @@ private:
      * "partition and refinement.h") and reset both unbranched and vertex_sequence up to the return level.
      * Thus we return to a previous node.
      */
-    void backtrack_to(int level);
+    void backtrack_to(unsigned int level);
 
 
 public:
