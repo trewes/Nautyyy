@@ -99,7 +99,6 @@ int main(int argc, char* argv[]) {
 
     try{
         std::cout<<"Begin Nautyyy: "<<std::endl;
-//! issue seems to be invariant
         Graph g = Sparse(file1);
         Nautyyy g_nautyyy(g, nauty_settings);
 
