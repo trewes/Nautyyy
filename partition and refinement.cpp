@@ -423,10 +423,10 @@ CellStruct Partition::target_cell_selector(const Graph& graph, TargetcellMethod 
     if(method == first or (non_singleton.size() == 1)){                  //chose and return the first non-singleton cell
         return *non_singleton.front();
     }
-    else if(method == first_smallest) {                                 //find first non trivial cell of smallest size
-        int min = std::numeric_limits<int>::max();                                                            //infinity
+    else if(method == first_smallest) {                                   //find first non trivial cell of smallest size
+        unsigned int min = std::numeric_limits<int>::max();                                                   //infinity
         std::list<CellStruct>::const_iterator index = lcs.end();
-        int size;
+        unsigned int size;
         for (auto it: non_singleton) {
             size = it->length;
             if(size == 2){                      //consideration: can immediately stop if a cell of size 2 has been found
