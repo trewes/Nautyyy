@@ -1,7 +1,10 @@
 #include <iostream>
 #include <getopt.h>
 
+#include <random>
+
 #include "nautyyy.h"
+using Permutation = std::vector<unsigned int>;
 
 
 void print_help(){
@@ -11,7 +14,7 @@ void print_help(){
     std::cout<<"-s|--stats              :Enables output of statistics gathered during the algorithm."<<std::endl;
     std::cout<<"-t|--time               :Enables output of execution time."<<std::endl;
     std::cout<<"-i|--invarmethod  arg   :Change invariant used during algorithm."<<std::endl;
-    std::cout<<"                         n for none, s for shape, r for refinement"<<std::endl;
+    std::cout<<"                         n for none, s for shape, r for refinement, i for number of cells."<<std::endl;
     std::cout<<"-c|--tcmethod           :Change targetcell selector used during algorithm."<<std::endl;
     std::cout<<"                         f for first, s for first_smallest, j for joins"<<std::endl;
     std::cout<<"-n|--notfp              :First path will also be pruned by node invariant."<<std::endl;
@@ -62,6 +65,9 @@ int main(int argc, char* argv[]) {
                 else if(*optarg=='r'){
                     nauty_settings.invarmethod = Options::refinement;
                 }
+                else if(*optarg=='c'){
+                    nauty_settings.invarmethod = Options::num_cells;
+                }
                 else{
                     std::cout<<"The invarmethod was not correctly specified."<<std::endl;
                     return -1;
@@ -88,14 +94,29 @@ int main(int argc, char* argv[]) {
     }
 
     //optind is the index in argv after going through all the options, now the arguments are given
-    char const* file1 = (argc>2) ? argv[optind] : "../Graphs/test7_1.txt";
-    char const* file2 = (argc>2) ? argv[optind+1] : "../Graphs/test7_2.txt";
+    char const* file1 = (argc>2) ? argv[optind] : "../Graphs/test12_1.txt";
+    char const* file2 = (argc>2) ? argv[optind+1] : "../Graphs/test12_2.txt";
 
     try{
         std::cout<<"Begin Nautyyy: "<<std::endl;
-
         Graph g = adjacency_matrix(file1);
         Nautyyy g_nautyyy(g, nauty_settings);
+
+        Permutation perm(g.size());
+        std::iota(perm.begin(), perm.end(), 0);
+
+
+        for(int i=0; i<30; i++) {
+            std::shuffle(perm.begin(), perm.end(), std::default_random_engine(10 * random()));
+            if ((g_nautyyy.best_leaf.hash_of_perm_graph ==
+                 Nautyyy(perm_graph(g, perm), nauty_settings).best_leaf.hash_of_perm_graph)) {
+                std::cout << true << " Test" << std::endl;
+            }
+            else{
+                std::cout<< false << " Wrooooooooooong!!!!!!!"<<std::endl;
+                throw std::runtime_error("This didn't work!");
+            }
+        }
 
         bool isomorphic = (g_nautyyy.best_leaf.hash_of_perm_graph == Nautyyy(file2, nauty_settings).best_leaf.hash_of_perm_graph);
 

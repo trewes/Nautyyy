@@ -21,7 +21,7 @@
  * The matrices are always handled as vectors of vectors containing booleans, this type is shortened to Matrix
  */
 using Graph = std::vector<std::vector<bool>>;
-using Permutation = std::vector<int>;
+using Permutation = std::vector<unsigned int>;
 
 /*
  * adjacency_matrix(filename) creates an adjacency matrix to a given input graph
@@ -76,7 +76,7 @@ std::vector<bool> perm_hash_value(const Graph& graph, Permutation perm);
  * Parameter: The graph, a vertex of it, and a subset of it's vertices
  * Returns: The count of Edges going from vertex to the cell
  */
-int degree(const Graph& graph, const int& vertex, const std::vector<int>& cell);
+unsigned int degree(const Graph& graph, const unsigned int &vertex, const std::vector<unsigned int> &cell);
 
 
 

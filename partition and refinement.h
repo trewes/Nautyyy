@@ -49,8 +49,8 @@
  * Vertex is used when representing what is supposed to be a vertex
  */
 using Graph = std::vector<std::vector<bool>>;
-using InvarType = std::vector<int>;
-using Vertex = int; //unsigned
+using InvarType = std::vector<unsigned int>;
+using Vertex = unsigned int; //unsigned
 
 /*
  * CellStruct
@@ -63,10 +63,10 @@ using Vertex = int; //unsigned
  * And an equal operator, returning true if all fields are equal.
  */
 struct CellStruct{
-    int first;
-    int length;
-    int in_level;
-    CellStruct(int input_first, int input_length, int input_in_level);
+    unsigned int first;
+    unsigned int length;
+    unsigned int in_level;
+    CellStruct(unsigned int input_first, unsigned int input_length, unsigned int input_in_level);
     bool operator==(const CellStruct& rhs) const;
 };
 
@@ -83,7 +83,7 @@ struct CellStruct{
  * level: level of the partition as in the level of the node in the search tree this partition belongs to
  * refinement_stacks: keeps for each partition on a previous level the necessary info in a stack to return to that level
  *                    this info is roughly the first field of each cell that was newly created
- * 
+ *
  * Simple member functions:
  * Partition(): constructs an empty partition with zero elements
  * Partition(n): initializes the unit partition on n vertices
@@ -106,11 +106,11 @@ private:
     std::list<CellStruct> lcs;
     std::vector<std::list<CellStruct>::iterator> in_cell;
     std::list<std::list<CellStruct>::iterator> non_singleton;
-    int level;
-    std::vector<std::stack<int>> refinement_stacks;
+    unsigned int level;
+    std::vector<std::stack<unsigned int>> refinement_stacks;
 public:
     explicit Partition();
-    explicit Partition(int n);
+    explicit Partition(unsigned int n);
     explicit Partition(const std::vector<std::vector<Vertex>> &other_format_partition);
     Partition(const Partition& old);
     Partition& operator=(const Partition& rhs);
@@ -118,9 +118,9 @@ public:
     void print_detail() const;
     void print_non_singleton() const;
     bool is_discrete() const;
-    int get_size() const;
-    int number_of_cells() const;
-    int get_first_of_cell(const int& element) const;
+    unsigned int get_size() const;
+    unsigned int number_of_cells() const;
+    Vertex get_first_of_cell(const unsigned int &element) const;
     std::vector<Vertex> decode_given_cell(const CellStruct& cell) const;
 
 
@@ -137,7 +137,17 @@ private:
      *            cell_v, cell_w Both vectors of int's representing vertices of the graph
      * Returns: A vector of subsets of cell_v in ascending order in regards to their elements degree to cell_w
      */
-    static std::vector<std::vector<int>> decomposition(const Graph& graph, const std::vector<int>& cell_v, const std::vector<int>& cell_w) ;
+    static std::vector<std::vector<unsigned int>>
+    decomposition(const Graph& graph, const std::vector<unsigned int> &cell_v, const std::vector<unsigned int> &cell_w);
+    /*
+     * sp_decomposition(graph, cell_v, cell_w) A slight variant of decomposition which employs the pre computed degrees
+     *
+     * Parameter: graph as above
+     *            cell which we want to decompose according to
+     *            all_degrees the vector containing the degrees of all vertices into a cell chosen before
+     * Returns: A vector of subsets of cell_v in ascending order in regards to their elements degree in all_degrees
+     */
+
 
 public:
     /*
@@ -189,7 +199,7 @@ public:
      *
      * Action: The partition is now the one it was at the given level
      */
-    void reconstruct_at_level(int return_level);
+    void reconstruct_at_level(unsigned int return_level);
 
 
 

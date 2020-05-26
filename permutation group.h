@@ -24,9 +24,9 @@
  * And permutations are integer vectors sending i to permutation[i]. Shortened to Permutation.
  * PermGroup is then a representation of a group of Permutations in it's most basic form
  */
-using Graph = std::vector<std::vector<bool>> ;
-using Permutation = std::vector<int> ;
-using PermGroup =  std::vector<Permutation>;
+using Permutation = std::vector<unsigned int>;
+using PermGroup = std::vector<Permutation>;
+using Graph = std::vector<std::vector<bool>>;
 
 /*
  * discrete_partition_to_perm(partition) Discrete partitions can be identified
@@ -61,7 +61,7 @@ Permutation perm_composition(const Permutation& first_perm, const Permutation& s
  *            perm A permutation
  * Returns: The subset with the elements permuted
  */
-std::vector<int> apply_perm(std::vector<int> vector, const Permutation& perm);
+std::vector<unsigned int> apply_perm(std::vector<unsigned int> vector, const Permutation& perm);
 
 /*
  * print_perm(perm) Outputs the permutation in cycle notation. That means only elements that move something are
@@ -82,7 +82,6 @@ Graph perm_graph(const Graph& graph, const Permutation& perm);
 
 
 
-
 //!nw
 
 /*
@@ -92,7 +91,7 @@ Graph perm_graph(const Graph& graph, const Permutation& perm);
  *
  * Returns: A bool whether the given permutation fixes the sequence
  */
-bool is_fixed(const Permutation& perm, const std::vector<int> &sequence);
+bool is_fixed(const Permutation& perm, const std::vector<unsigned int> &sequence);
 
 //stabilizer
 /*
@@ -102,7 +101,7 @@ bool is_fixed(const Permutation& perm, const std::vector<int> &sequence);
  *
  * Returns: A subvector of permutations all of which fix the sequence
  */
-PermGroup subgroup_fixing_sequence(const PermGroup &permutations, const std::vector<int> &sequence);
+PermGroup subgroup_fixing_sequence(const PermGroup &permutations, const std::vector<unsigned int> &sequence);
 
 //minimum cell representatives, orbits
 /*
@@ -112,7 +111,7 @@ PermGroup subgroup_fixing_sequence(const PermGroup &permutations, const std::vec
  *
  * Returns: An approximate minimum cell representation
  */
-std::vector<int> mcrs(const PermGroup& permutations, const std::vector<int>& sequence);
+std::vector<unsigned int> mcrs(const PermGroup& permutations, const std::vector<unsigned int> &sequence);
 
 //for more efficiency, faster search for stabilizers and computation of orbits
 

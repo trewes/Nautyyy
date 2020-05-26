@@ -25,10 +25,10 @@
  * Self-explanatory typedefs of certain types.
  */
 using Graph = std::vector<std::vector<bool>>;
-using Permutation = std::vector<int>;
+using Permutation = std::vector<unsigned int>;
 using PermGroup = std::vector<Permutation>;
-using InvarType = std::vector<int>;
-using Vertex = int;
+using InvarType = std::vector<unsigned int>;
+using Vertex = unsigned int;
 
 
 /*
@@ -65,6 +65,7 @@ struct Statistics{
  * invarmethod: determines which node invariant is used for pruning. none means no pruning is done,
  *              shape is the invariant of a vector of the cell sizes of a partition
  *              refinement consists of info collected during refinement, here: all sizes of ocurring shattered cells
+ *              num_cells is just the number of cells in the current partition
  * targetcellmethod: determines what target cell is selected, for further info see partition and refinement.h
  *                   reminder: options are first, first_smallest and joins
  * explore_first_path: A consideration is to not prune by node invariant while exploring the first path (first child of
@@ -79,7 +80,7 @@ struct Statistics{
  *
  */
 struct Options{
-    enum InvarMethod {none, shape, refinement};
+    enum InvarMethod {none, shape, refinement, num_cells};
     InvarMethod invarmethod = shape;
     Partition::TargetcellMethod targetcellmethod = Partition::first;
     bool explore_first_path = true;
@@ -87,7 +88,7 @@ struct Options{
     Partition input_partition = Partition();
     bool print_stats = false;
     bool print_time = false;
-    int max_level_strong_tc = 0;
+    unsigned int max_level_strong_tc = 0;
     Partition::TargetcellMethod strong_targetcellmethod = Partition::joins;
 };
 
@@ -105,11 +106,11 @@ struct Options{
  * undiscovered(): Whether the Leaf is 'empty' or has been filled with values, i.e. is an actual Leaf
  */
 struct Leaf{
-    std::vector<int> vertex_sequence;
+    std::vector<unsigned int> vertex_sequence;
     Permutation leaf_perm;
     std::vector<bool> hash_of_perm_graph;
     Leaf();
-    Leaf(std::vector<int> in_vertex_sequence, Permutation  in_leaf_perm, std::vector<bool>  hash_val);
+    Leaf(std::vector<unsigned int> in_vertex_sequence, Permutation  in_leaf_perm, std::vector<bool>  hash_val);
     bool undiscovered() const;
 };
 
@@ -154,7 +155,7 @@ private:
     Statistics stats;
     const Options opt;
     const Graph graph;
-    int current_level;
+    unsigned int current_level;
     Partition current_partition;
 public:
     PermGroup found_automorphisms;                                   //public, if one is interested in the automorphisms
@@ -171,7 +172,7 @@ private:
     bool first_path_explored = false;
     bool first_path_help = false;
 
-    static int get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence);
+    static unsigned int get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence);
 
     /*
      * search_tree_traversal()
@@ -192,6 +193,16 @@ private:
      */
     void process_node();
     /*
+     * prune_by_invar()
+     *
+     * Handles the pruning of a node.
+     * On non-leaf nodes it gets the in opt:invarmethod specified Invar, compares it to ones already found and either
+     * updates maximal invariant, simply goes to the next level or prunes the current node and backtracks to parent.
+     * On leaves it only asserts that the leaf is considered greatest, the pruning or rather updating of the best_leaf
+     * is handled separately in process_node().
+     */
+    void prune_by_invar();
+    /*
      * process_leaf()
      *
      * Handles the particulars of encountering a leaf
@@ -210,7 +221,7 @@ private:
      * "partition and refinement.h") and reset both unbranched and vertex_sequence up to the return level.
      * Thus we return to a previous node.
      */
-    void backtrack_to(int level);
+    void backtrack_to(unsigned int level);
 
 
 public:
@@ -224,7 +235,7 @@ public:
      * Then it calls search_tree_traversal() and the main algorithm begins.
      */
     explicit Nautyyy(char const* filename, Options options = Options{});
-    explicit Nautyyy(Graph in_graph, Options options = Options{});
+    explicit Nautyyy(Graph  in_graph, Options options = Options{});
 };
 
 
