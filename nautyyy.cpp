@@ -164,7 +164,7 @@ void Nautyyy::process_node(){
 
                  //first encounter of this node, get target cell but don't prune yet since we explore first child anyway
     if(unbranched.size() < current_level){
-        CellStruct target_cell(-1, -1, -1);
+        CellStruct target_cell(0, 0, 0);
         if(current_level < opt.max_level_strong_tc) {                             //decide if we use "stronger" selector
             target_cell = current_partition.target_cell_selector(graph, opt.strong_targetcellmethod);
         }
