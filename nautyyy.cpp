@@ -201,9 +201,9 @@ void Nautyyy::process_node(){
 
 
 
-    if(((not opt.explore_first_path) or first_path_explored)){ //!This, how do I fix it
-        // current_level++;
-        // return;
+    if(opt.explore_first_path and not first_path_explored){ //!This, how do I fix it
+        //current_level++;
+        //return;
     }
 
     prune_by_invar();
@@ -233,7 +233,7 @@ void Nautyyy::process_leaf() {
         best_leaf_outdated_due_to_invariant=false;
         return;
     }
-    //!This, do I even really need firstleaf at all??
+
     if(hash_val == first_leaf.hash_of_perm_graph){                  //leaves are equivalent, this gives an automorphism
         Permutation automorphism = perm_composition(first_leaf.leaf_perm, perm_inverse(leaf_perm));
         found_automorphisms.push_back(automorphism);
@@ -275,10 +275,6 @@ void Nautyyy::backtrack_to(unsigned int level) {
 
 
 void Nautyyy::prune_by_invar() {
-
-    if(opt.invarmethod==Options::none){
-        throw std::runtime_error("Set to not prune by invar, one should not reach this point.");
-    }
 
     InvarType new_invar{};
     if(current_partition.is_discrete() and (not (opt.invarmethod==Options::none))){
