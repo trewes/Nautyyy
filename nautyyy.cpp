@@ -259,10 +259,6 @@ void Nautyyy::backtrack_to(unsigned int level) {
 
 void Nautyyy::prune_by_invar() {
 
-    if(opt.invarmethod==Options::none){
-        throw std::runtime_error("Set to not prune by invar, one should not reach this point.");
-    }
-
     InvarType new_invar{};
     if(current_partition.is_discrete() and (not (opt.invarmethod==Options::none))){
         new_invar.push_back(std::numeric_limits<int>::max());            //assert that leaves are considered as greatest
