@@ -88,7 +88,7 @@ Graph dimacs(char const* filename){
         std::getline(file, line);                                                               //ignore comments
     }
     if(line[0] != 'p'){
-        throw std::runtime_error("File is not in correct dimcs format.");                //a different case was expected
+        throw std::runtime_error("File is not in correct dimacs format.");                //a different case was expected
     }
     std::string p, edge;
     int n, e;
@@ -97,9 +97,13 @@ Graph dimacs(char const* filename){
                                                            //matrix with n row and columns is initialised, every entry 0
     Graph graph(n, std::vector<bool>(n, false));
     std::getline(file, line);
+    bool aux_color = false;
     while(line[0] == 'n'){
-        std::cout<<"This program does not handle color assignment of\n"
-                   "vertices so lines with n at the beginning are ignored."<<std::endl;
+        if(not aux_color) {
+            std::cout << "This program does not handle color assignment of\n"
+                         "vertices so lines with n at the beginning are ignored." << std::endl;
+            aux_color = true;
+        }
         std::getline(file, line);
     }
 
