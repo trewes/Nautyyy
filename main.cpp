@@ -1,11 +1,7 @@
 #include <iostream>
 #include <getopt.h>
 
-#include <random>
-
 #include "nautyyy.h"
-using Permutation = std::vector<unsigned int>;
-
 
 void print_help(){
     std::cout<<"Usage: Nautyyy.exe [options] graph1.txt graph2.txt"<<std::endl;
