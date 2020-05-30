@@ -152,16 +152,6 @@ void Nautyyy::search_tree_traversal() {
 
 void Nautyyy::process_node(){
 
-                                                //utility code for setting of not using node variant for first node path
-    if(current_level==1 and opt.explore_first_path) {
-                          //when we encounter this code a second time we will have explored first path, thus update bool
-        if (first_path_help) {
-            first_path_explored = true;
-        } else {
-            first_path_help = true;
-        }
-    }
-
                  //first encounter of this node, get target cell but don't prune yet since we explore first child anyway
     if(unbranched.size() < current_level){
         CellStruct target_cell(0, 0, 0);
@@ -199,13 +189,6 @@ void Nautyyy::process_node(){
     current_partition.split_by_and_refine(graph, child);                                //get refined partition of split
     stats.refinements_made++;
 
-
-
-    if(((not opt.explore_first_path) or first_path_explored)){ //!This, how do I fix it
-       // current_level++;
-       // return;
-    }
-
     prune_by_invar();
 }
 
@@ -233,7 +216,7 @@ void Nautyyy::process_leaf() {
         best_leaf_outdated_due_to_invariant=false;
         return;
     }
-    //!This, do I even really need firstleaf at all??
+
      if(hash_val == first_leaf.hash_of_perm_graph){                  //leaves are equivalent, this gives an automorphism
         Permutation automorphism = perm_composition(first_leaf.leaf_perm, perm_inverse(leaf_perm));
         found_automorphisms.push_back(automorphism);
@@ -243,9 +226,7 @@ void Nautyyy::process_leaf() {
         backtrack_to(current_level-1);
         return;
     }
-                                                      //same but for best leaf. Not explicitly mentioned to do this also
-                                                   //but it makes sense to also use best guess to look for automorphisms
-     else if(hash_val == best_leaf.hash_of_perm_graph){
+     else if(hash_val == best_leaf.hash_of_perm_graph){                                         //same but for best leaf
          Permutation automorphism = perm_composition(best_leaf.leaf_perm, perm_inverse(leaf_perm));
          found_automorphisms.push_back(automorphism);
          stats.automorphisms_found++;
