@@ -60,9 +60,9 @@ bool Leaf::undiscovered() const{
 
 unsigned int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence) {
 
-    for(size_t same_untill = 0, max = std::min(first_sequence.size(), second_sequence.size()); same_untill<max; same_untill++){
-        if(first_sequence[same_untill] != second_sequence[same_untill]){
-            return same_untill+1;                                     //the level up to which the vertex sequences agree
+    for(size_t same_until = 0, max = std::min(first_sequence.size(), second_sequence.size()); same_until < max; same_until++){
+        if(first_sequence[same_until] != second_sequence[same_until]){
+            return same_until + 1;                                     //the level up to which the vertex sequences agree
         }
     }
     throw std::runtime_error("Error, the two given leaves are the same.");
