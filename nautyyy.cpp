@@ -152,16 +152,6 @@ void Nautyyy::search_tree_traversal() {
 
 void Nautyyy::process_node(){
 
-    //utility code for setting of not using node variant for first node path
-    if(current_level==1 and opt.explore_first_path) {
-        //when we encounter this code a second time we will have explored first path, thus update bool
-        if (first_path_help) {
-            first_path_explored = true;
-        } else {
-            first_path_help = true;
-        }
-    }
-
     //first encounter of this node, get target cell but don't prune yet since we explore first child anyway
     if(unbranched.size() < current_level){
         CellStruct target_cell(0, 0, 0);
@@ -198,13 +188,6 @@ void Nautyyy::process_node(){
     current_vertex_sequence.push_back(child);
     current_partition.split_by_and_refine(graph, child);                                //get refined partition of split
     stats.refinements_made++;
-
-
-
-    if(((not opt.explore_first_path) or first_path_explored)){ //!This, how do I fix it
-        // current_level++;
-        // return;
-    }
 
     prune_by_invar();
 }

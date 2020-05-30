@@ -83,7 +83,6 @@ struct Options{
     enum InvarMethod {none, shape, refinement, num_cells};
     InvarMethod invarmethod = shape;
     Partition::TargetcellMethod targetcellmethod = Partition::first;
-    bool explore_first_path = true;
     bool use_unit_partition = true;
     Partition input_partition = Partition();
     bool print_stats = false;
@@ -169,8 +168,6 @@ private:
     std::vector<InvarType> max_invar_at_level;
 
     bool best_leaf_outdated_due_to_invariant = false;
-    bool first_path_explored = false;
-    bool first_path_help = false;
 
     static unsigned int get_gca_level(const std::vector<Vertex> &first_sequence, const std::vector<Vertex> &second_sequence);
 
