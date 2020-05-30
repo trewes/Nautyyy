@@ -111,7 +111,7 @@ void Sparse::dimacs(char const* filename){
         std::getline(file, line);                                                               //ignore comments
     }
     if(line[0] != 'p'){
-        throw std::runtime_error("File is not in correct dimcs format.");                //a different case was expected
+        throw std::runtime_error("File is not in correct dimacs format.");                //a different case was expected
     }
     std::string p, edge;
     int n, e;
