@@ -13,6 +13,7 @@ void print_help(){
     std::cout<<"                         n for none, s for shape, r for refinement, i for number of cells."<<std::endl;
     std::cout<<"-c|--tcmethod           :Change targetcell selector used during algorithm."<<std::endl;
     std::cout<<"                         f for first, s for first_smallest, j for joins"<<std::endl;
+    std::cout<<"-u|--use_implicit       :Enables use of implicit automorphisms for pruning."<<std::endl;
 }
 
 
@@ -31,9 +32,10 @@ int main(int argc, char* argv[]) {
             {"time", no_argument, nullptr, 't'},
             {"invarmethod", required_argument, nullptr, 'i'},
             {"tcmethod", required_argument, nullptr, 'c'},
+            {"use_implicit", no_argument, nullptr, 'u'},
     };
 
-    while ((opt = getopt_long(argc, argv, "hsti:c:n", long_options, &option_index)) != -1){
+    while ((opt = getopt_long(argc, argv, "hsti:c:nu", long_options, &option_index)) != -1){
         switch (opt) {
 
             default:
@@ -81,6 +83,9 @@ int main(int argc, char* argv[]) {
                     std::cout<<"The targetcell selection method was not correctly specified."<<std::endl;
                     return -1;
                 }
+                break;
+            case 'u':
+                nauty_settings.use_implicit_pruning = true;
                 break;
         }
     }

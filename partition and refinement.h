@@ -120,6 +120,7 @@ public:
     bool is_discrete() const;
     unsigned int get_size() const;
     unsigned int number_of_cells() const;
+    unsigned int number_of_non_singleton_cells() const;
     Vertex get_first_of_cell(const unsigned int &element) const;
     std::vector<Vertex> decode_given_cell(const CellStruct& cell) const;
 

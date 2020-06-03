@@ -3,9 +3,10 @@
 
 void Statistics::print() const {
     std::cout<<"Total leaves visited: "<<leaves_visited<<" and automorphisms found: "<<automorphisms_found
-             <<". Times pruned by invar: "<<num_pruned_by_invar<<" and automorphisms: "<<num_pruned_by_auto
-             << ". Refined " << refinements_made << " times." << " Canonical updates: " << best_leaf_updates<<". Backtracks: "
-             <<times_backtracked<< ". Reached level: "<<max_level<<", total tc's "<<total_target_cells<<std::endl;
+             <<". Times pruned by invar: "<<num_pruned_by_invar<<" by automorphisms: "<<num_pruned_by_auto
+             <<" by implicit automorphisms: " <<num_pruned_implicitly<<".\nRefined " << refinements_made << " times."
+             <<" Canonical updates: " << best_leaf_updates<<". Backtracks: "<<times_backtracked<< ". Reached level: "<<max_level
+             <<", total tc's selected: "<<total_target_cells<<std::endl;
 }
 
 void Statistics::pretty_time() const{
@@ -163,6 +164,20 @@ void Nautyyy::process_node(){
         }
         stats.total_target_cells++;
         unbranched.push_back(current_partition.decode_given_cell(target_cell));
+
+        if(opt.use_implicit_pruning) {
+            //when the partition is of a certain structure it allows us to infer implicit automorphisms
+            //if this is the case, all child nodes of the current node are isomorphic,
+            //so only the first one needs to be explored, remove all other children
+            //For reference see Lemma 2.25 in McKay (1981)
+            unsigned int n = graph.size();
+            unsigned int m = current_partition.number_of_non_singleton_cells();
+            unsigned int pi = current_partition.number_of_cells();
+            if ((n <= pi + 4) or (n == pi + m) or (n == pi + m + 1)) {
+                stats.num_pruned_implicitly++;
+                unbranched.back().erase(unbranched.back().begin()+1, unbranched.back().end());
+            }
+        }
     }
         //only prune at second encounter, i.e. exists target cell and first child has been explored
     else if(not found_automorphisms.empty()){
