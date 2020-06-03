@@ -154,6 +154,10 @@ unsigned int Partition::number_of_cells() const{
     return lcs.size();
 }
 
+unsigned int Partition::number_of_non_singleton_cells() const{
+    return non_singleton.size();
+}
+
 Vertex Partition::get_first_of_cell(const unsigned int &element) const{
     return in_cell[element]->first;
 }

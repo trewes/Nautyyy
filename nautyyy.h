@@ -51,6 +51,7 @@ struct Statistics{
     unsigned int automorphisms_found = 0;
     unsigned int times_backtracked = 0;
     unsigned int total_target_cells = 0;
+    unsigned int num_pruned_implicitly = 0;
     std::chrono::steady_clock::time_point start_time;
     std::chrono::duration<double> execution_time;
     void print() const;
@@ -89,6 +90,7 @@ struct Options{
     bool print_time = false;
     unsigned int max_level_strong_tc = 0;
     Partition::TargetcellMethod strong_targetcellmethod = Partition::joins;
+    bool use_implicit_pruning = false;
 };
 
 
