@@ -3,10 +3,13 @@
 
 void Statistics::print() const {
     std::cout<<"Total leaves visited: "<<leaves_visited<<" and automorphisms found: "<<automorphisms_found
-    <<". Times pruned by invar: "<<num_pruned_by_invar<<" by automorphisms: "<<num_pruned_by_auto
-    <<" by implicit automorphisms: " <<num_pruned_implicitly<<".\nRefined " << refinements_made << " times."
-    <<" Canonical updates: " << best_leaf_updates<<". Backtracks: "<<times_backtracked<< ". Reached level: "<<max_level
-    <<", total tc's selected: "<<total_target_cells<<std::endl;
+             <<". Times pruned by invar: "<<num_pruned_by_invar<<" by automorphisms: "<<num_pruned_by_auto;
+             if(num_pruned_implicitly) {
+                 std::cout<<" by implicit automorphisms: "<< num_pruned_implicitly;
+             }
+             std::cout<<".\nRefined " << refinements_made << " times."
+             <<" Canonical updates: " << best_leaf_updates<<". Backtracks: "<<times_backtracked
+             << ". Reached level: "<<max_level<<", total tc's selected: "<<total_target_cells<<std::endl;
 }
 
 void Statistics::pretty_time() const{
