@@ -84,10 +84,17 @@ Nautyyy::Nautyyy(char const* filename, Options options)
     stats.start_time = std::chrono::steady_clock::now();
 
     if(opt.use_unit_partition){
-        current_partition = Partition(graph.nof_vertices());                                      //begin with unit partition
+        current_partition = Partition(graph.nof_vertices());                              //begin with unit partition
     }
     else{
-        current_partition = opt.input_partition;                                              //or user passes partition
+        //current_partition = opt.input_partition;                                              //or user passes partition
+        if(graph.initial_partition.empty()){
+            throw std::runtime_error("No initial partition was given.");
+        }
+        current_partition = Partition(graph.initial_partition);
+        if(graph.nof_vertices() != current_partition.get_size()){
+            throw std::runtime_error("No complete initial partition was given.");
+        }
     }
     current_level = 1;
     stats.max_level = 1;
@@ -111,10 +118,17 @@ Nautyyy::Nautyyy(Graph  in_graph, Options options)
     stats.start_time = std::chrono::steady_clock::now();
 
     if(opt.use_unit_partition){
-        current_partition = Partition(graph.nof_vertices());
+        current_partition = Partition(graph.nof_vertices());                              //begin with unit partition
     }
     else{
-        current_partition = opt.input_partition;
+        //current_partition = opt.input_partition;                                              //or user passes partition
+        if(graph.initial_partition.empty()){
+            throw std::runtime_error("No initial partition was given.");
+        }
+        current_partition = Partition(graph.initial_partition);
+        if(graph.nof_vertices() != current_partition.get_size()){
+            throw std::runtime_error("No complete initial partition was given.");
+        }
     }
     current_level = 1;
     stats.max_level = 1;

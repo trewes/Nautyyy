@@ -14,6 +14,7 @@ void print_help(){
     std::cout<<"-c|--tcmethod           :Change targetcell selector used during algorithm."<<std::endl;
     std::cout<<"                         f for first, s for first_smallest, j for joins"<<std::endl;
     std::cout<<"-u|--use_implicit       :Enables use of implicit automorphisms for pruning."<<std::endl;
+    std::cout<<"-p|--partition          :Enables possibility of using an initial partition instead of unit partition."<<std::endl;
 }
 
 
@@ -33,9 +34,10 @@ int main(int argc, char* argv[]) {
             {"invarmethod", required_argument, nullptr, 'i'},
             {"tcmethod", required_argument, nullptr, 'c'},
             {"use_implicit", no_argument, nullptr, 'u'},
+            {"partition", no_argument, nullptr, 'p'},
     };
 
-    while ((opt = getopt_long(argc, argv, "hsti:c:nu", long_options, &option_index)) != -1){
+    while ((opt = getopt_long(argc, argv, "hsti:c:nup", long_options, &option_index)) != -1){
         switch (opt) {
 
             default:
@@ -86,6 +88,9 @@ int main(int argc, char* argv[]) {
                 break;
             case 'u':
                 nauty_settings.use_implicit_pruning = true;
+                break;
+            case 'p':
+                nauty_settings.use_unit_partition = false;
                 break;
         }
     }

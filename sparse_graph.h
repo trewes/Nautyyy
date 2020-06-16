@@ -16,6 +16,9 @@
 #include <algorithm>
 #include <stdexcept>
 #include <set>
+#include <map>
+
+static std::vector<std::vector<unsigned int>> empty_partition{};
 
 
 /*
@@ -57,6 +60,7 @@ public:
     explicit Sparse(unsigned int num_vertices);
     void print() const;
     unsigned int nof_vertices() const;
+    std::vector<std::vector<unsigned int>> initial_partition{};
 
     /*
      * Sparse(filename) creates an adjacency list structure to a given input graph

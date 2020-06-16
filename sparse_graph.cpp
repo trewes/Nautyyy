@@ -121,15 +121,22 @@ void Sparse::dimacs(char const* filename){
     vertices.resize(n);
 
     std::getline(file, line);
-    bool aux_color = false;
+    char aux; unsigned int node, color;
+    std::map<unsigned int, std::vector<unsigned int>> aux_map;
     while(line[0] == 'n'){
-        if(not aux_color) {
-            std::cout << "This program does not handle color assignment of\n"
-                         "vertices so lines with n at the beginning are ignored." << std::endl;
-        aux_color = true;
-        }
+        ss.clear();
+        ss.str(std::string());
+        ss << line;
+        ss >> aux >> node >> color;
+        aux_map[color].push_back(node - 1);
+
         std::getline(file, line);
     }
+
+    for(const auto& color_vec: aux_map){
+        initial_partition.push_back(color_vec.second);
+    }
+
 
     int offset = 1;                                                  //in dimacs format, vertices start at 0 and go to n
 
