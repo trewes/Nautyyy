@@ -70,6 +70,7 @@ int main(int argc, char* argv[]) {
                 }
                 else{
                     std::cout<<"The invarmethod was not correctly specified."<<std::endl;
+                    std::cout<<"Program failed."<<std::endl;
                     return -1;
                 }
                 break;
@@ -85,6 +86,7 @@ int main(int argc, char* argv[]) {
                 }
                 else{
                     std::cout<<"The targetcell selection method was not correctly specified."<<std::endl;
+                    std::cout<<"Program failed."<<std::endl;
                     return -1;
                 }
                 break;
@@ -102,6 +104,7 @@ int main(int argc, char* argv[]) {
     if((not nauty_settings.use_unit_partition) and nauty_settings.use_random_perm_of_graph){
         std::cout<<"Currently it is not supported to use a random permutation graph and keep the given initial "
                    "partition intact, error."<<std::endl;
+        std::cout<<"Program failed."<<std::endl;
         return -1;
     }
 
@@ -110,9 +113,9 @@ int main(int argc, char* argv[]) {
     char const* file2 = (argc>2) ? argv[optind+1] : "../Graphs/test12_2.txt";
 
     try{
+        //I'm using this format of the main function to showcase the different methods of calling the Nautyyy algorithm
         std::cout<<"Begin Nautyyy: "<<std::endl;
-        //Use a random permutation of the graph or not
-        Graph g = nauty_settings.use_random_perm_of_graph ? random_perm_of(file1): Sparse(file1);
+        Graph g = Sparse(file1);
         Nautyyy g_nautyyy(g, nauty_settings);
 
         bool isomorphic = (g_nautyyy.best_leaf.hash_of_perm_graph == Nautyyy(file2, nauty_settings).best_leaf.hash_of_perm_graph);

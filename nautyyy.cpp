@@ -122,9 +122,23 @@ Nautyyy::Nautyyy(char const* filename, Options options)
 }
 
 
+//Little helper function to be able to use the ternary operator during the member initialization
+//Necessary since we want the graph, once initialized, to be a const member of Nautyyy
+Graph random_perm_of(const Graph& g){
+    //Create a random permutation the size of number of vertices of the graph
+    Permutation perm(g.nof_vertices());
+    std::iota(perm.begin(), perm.end(), 0);
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    //Shuffle the vector on numbers 0...n-1, results in a random permutation
+    std::shuffle(perm.begin(), perm.end(), mt);
+    return perm_graph(g, perm);
+}
+
 //same as other constructor but the graph is passed as graph and not as filename to read in a graph
-Nautyyy::Nautyyy(Graph  in_graph, Options options)
-        : stats(Statistics()), opt(std::move(options)), graph(std::move(in_graph)),
+Nautyyy::Nautyyy(const Graph&  in_graph, Options options)
+        : stats(Statistics()), opt(std::move(options)),
+          graph(options.use_random_perm_of_graph ? random_perm_of(in_graph): in_graph),
           found_automorphisms(std::vector<Permutation>()), unbranched(std::vector<std::vector<Vertex>>()),
           current_vertex_sequence(std::vector<Vertex>()), first_leaf(Leaf()), best_leaf(Leaf()),
           max_invar_at_level(std::vector<InvarType>()){

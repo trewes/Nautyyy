@@ -238,11 +238,12 @@ public:
      * Then it calls search_tree_traversal() and the main algorithm begins.
      */
     explicit Nautyyy(char const* filename, Options options = Options{});
-    explicit Nautyyy(Graph  in_graph, Options options = Options{});
+    explicit Nautyyy(const Graph&  in_graph, Options options = Options{});
 };
 
 //Little helper function to be able to use the ternary operator during the member initialization
 //Necessary since we want the graph, once initialized, to be a const member of Nautyyy
 Graph random_perm_of(char const* filename);
+Graph random_perm_of(const Graph& g);
 
 #endif //NAUTY_NAUTYYY_H
