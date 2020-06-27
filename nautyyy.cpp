@@ -73,10 +73,24 @@ unsigned int Nautyyy::get_gca_level(const std::vector<Vertex> &first_sequence, c
 
 }
 
+//Little helper function to be able to use the ternary operator during the member initialization
+//Necessary since we want the graph, once initialized, to be a const member of Nautyyy
+Graph random_perm_of(char const* filename){
+    //Create a random permutation the size of number of vertices of the graph
+    Sparse g = Sparse(filename);
+    Permutation perm(g.nof_vertices());
+    std::iota(perm.begin(), perm.end(), 0);
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    //Shuffle the vector on numbers 0...n-1, results in a random permutation
+    std::shuffle(perm.begin(), perm.end(), mt);
+    return perm_graph(g, perm);
+}
 
                                                                //simple/empty initialization of most fields of the class
 Nautyyy::Nautyyy(char const* filename, Options options)
-    : stats(Statistics()), opt(std::move(options)), graph(Sparse(filename)),
+    : stats(Statistics()), opt(std::move(options)),
+    graph(options.use_random_perm_of_graph ? random_perm_of(filename): Sparse(filename)),
       found_automorphisms(std::vector<Permutation>()), unbranched(std::vector<std::vector<Vertex>>()),
       current_vertex_sequence(std::vector<Vertex>()), first_leaf(Leaf()), best_leaf(Leaf()),
       max_invar_at_level(std::vector<InvarType>()){

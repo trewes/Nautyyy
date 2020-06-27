@@ -15,6 +15,7 @@ void print_help(){
     std::cout<<"                         f for first, s for first_smallest, j for joins"<<std::endl;
     std::cout<<"-u|--use_implicit       :Enables use of implicit automorphisms for pruning."<<std::endl;
     std::cout<<"-p|--partition          :Enables possibility of using an initial partition instead of unit partition."<<std::endl;
+    std::cout<<"-r|--random             :Runs the algorithm on a random permutation of the given graph."<<std::endl;
 }
 
 
@@ -35,9 +36,10 @@ int main(int argc, char* argv[]) {
             {"tcmethod", required_argument, nullptr, 'c'},
             {"use_implicit", no_argument, nullptr, 'u'},
             {"partition", no_argument, nullptr, 'p'},
+            {"random", no_argument, nullptr, 'r'},
     };
 
-    while ((opt = getopt_long(argc, argv, "hsti:c:nup", long_options, &option_index)) != -1){
+    while ((opt = getopt_long(argc, argv, "hsti:c:nupr", long_options, &option_index)) != -1){
         switch (opt) {
 
             default:
@@ -92,7 +94,15 @@ int main(int argc, char* argv[]) {
             case 'p':
                 nauty_settings.use_unit_partition = false;
                 break;
+            case 'r':
+                nauty_settings.use_random_perm_of_graph = true;
+                break;
         }
+    }
+    if((not nauty_settings.use_unit_partition) and nauty_settings.use_random_perm_of_graph){
+        std::cout<<"Currently it is not supported to use a random permutation graph and keep the given initial "
+                   "partition intact, error."<<std::endl;
+        return -1;
     }
 
     //optind is the index in argv after going through all the options, now the arguments are given
@@ -101,7 +111,8 @@ int main(int argc, char* argv[]) {
 
     try{
         std::cout<<"Begin Nautyyy: "<<std::endl;
-        Graph g = Sparse(file1);
+        //Use a random permutation of the graph or not
+        Graph g = nauty_settings.use_random_perm_of_graph ? random_perm_of(file1): Sparse(file1);
         Nautyyy g_nautyyy(g, nauty_settings);
 
         bool isomorphic = (g_nautyyy.best_leaf.hash_of_perm_graph == Nautyyy(file2, nauty_settings).best_leaf.hash_of_perm_graph);

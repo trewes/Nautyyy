@@ -16,6 +16,9 @@
 #include <iostream>
 #include <chrono>
 #include <stdexcept>
+#include<algorithm>
+#include<numeric>
+#include <random>
 
 #include "sparse_graph.h"
 #include "partition and refinement.h"
@@ -91,6 +94,7 @@ struct Options{
     unsigned int max_level_strong_tc = 0;
     Partition::TargetcellMethod strong_targetcellmethod = Partition::joins;
     bool use_implicit_pruning = false;
+    bool use_random_perm_of_graph = false;
 };
 
 
@@ -237,5 +241,8 @@ public:
     explicit Nautyyy(Graph  in_graph, Options options = Options{});
 };
 
+//Little helper function to be able to use the ternary operator during the member initialization
+//Necessary since we want the graph, once initialized, to be a const member of Nautyyy
+Graph random_perm_of(char const* filename);
 
 #endif //NAUTY_NAUTYYY_H
